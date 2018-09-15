@@ -10,7 +10,7 @@ DEVICE = CC2430
 
 # ---------------------------------------------------------------------
 
-SOURCES = clock.c main.c
+SOURCES = uart.c clock.c main.c
 
 COMPILE = sdcc -mmcs51 -D$(DEVICE) -DF_CPU=16000000 --std-c11 --max-allocs-per-node 5000 --opt-code-size -I.
 
