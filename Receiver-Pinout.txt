@@ -1,0 +1,23 @@
+// CP2102 is wired to USART1 in UART Alt. 2 mode
+
+P1_7 - RxD - CP2102(26)-TxD
+P1_6 - TxD - CP2102(25)-RxD
+P1_5 - RTS - CP2102(23)-CTS
+P1_4 - CTS - CP2102(24)-RTS
+P1_3 -       CP2102(9)-/RST
+P1_2 - x
+P1_1 - x
+P1_0 - x
+
+P0_0 - Red LED
+P0_1 - Green LED
+P0_2 - x
+P0_3 -       CP2102(11)-/SUSPEND
+P0_4 - 8kB Serial EEPROM - 4
+P0_5 - 8kB Serial EEPROM - 5
+P0_6 - Green Tx LED
+P0_7 - Green Rx LED
+
+P2_0 - x
+P2_1 - DD
+P2_2 - DC
