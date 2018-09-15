@@ -14,12 +14,15 @@ volatile uint32_t _ticks = 0;
 
 void clock_init() {
 	// Configure 8-bit Timer 4
-	//  [7:5] Set Prescaler to /64 ... each tick = 4 uS (with a 16MHz clock)
+	//  [7:5] Set Prescaler to /64 (16 MHz) or /128 (32 MHz) ... each tick = 4 uS
 	//  [4] Start timer
 	//  [3] Enable Overflow interrupt
 	//  [2] Clear counter
 	//  [1:0] Modulo, repeatedly count from 0x00 to T4CC0 (TICKS_PER_MS)
-	T4CTL = 0xDE;
+	if (!(CLKCON & 0x01))
+		T4CTL = 0xFE; 		// 32 MHz
+	else
+		T4CTL = 0xDE; 		// 16 MHz
 	T4CC0 = TICKS_PER_MS;
 	T4IE = 1;	// Timer 4 Interrupt Enable
 }
