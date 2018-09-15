@@ -37,11 +37,8 @@ inline void loop() {
 
 inline void setup() {
 	// TODO... set clock to 32 MHz on boot?
+	hardware_init();
 	clock_init();
-
-	P0 = 0xC0; 			// Port 0 - set all low (except TxD/RxD)
-	P0DIR = 0x5F;		// Port 0 - set as outputs (except RxD/CTS)
-
 	uart_init();
 	clock_delay_ms(10);	// let the baud rate timer settle in?
 	printf("Hello World!\r\n");

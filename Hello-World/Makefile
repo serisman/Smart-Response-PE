@@ -23,7 +23,8 @@ all:	rom.bin
 	$(COMPILE) -c -o $@ $<
 
 clean:
-	rm -f *.lib *.rst *.rel *.lst *.ihx *.sym *.asm *.lk *.map
+	rm -f *.asm *.lst *.rel *.rst *.sym
+clean-rom:
 	rm -f rom.*
 
 # file targets:

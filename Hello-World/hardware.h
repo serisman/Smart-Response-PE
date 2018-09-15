@@ -24,4 +24,12 @@
 #define PIN_TX_LED				P0_6
 #define PIN_RX_LED				P0_7
 
+inline void hardware_init() {
+	P0 = 0x00; 			// Port 0 - set all low
+	P0DIR = 0xFF;		// Port 0 - set as outputs
+
+	P1 = 0xC8; 			// Port 1 - set all low (except TxD/RxD/RST)
+	P1DIR = 0x5F;		// Port 1 - set as outputs (except RxD/CTS)
+}
+
 #endif /* __hardware_h_included__ */
