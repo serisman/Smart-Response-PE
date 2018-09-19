@@ -1,5 +1,5 @@
 // Name: clock.h
-// Project: Smart-Response-PE/Hello-World
+// Project: Smart-Response-PE/lib
 // Author: Stephen Erisman
 // Creation Date: 2018-09-14
 // License: MIT
