@@ -1,0 +1,29 @@
+
+P1_7 - on/off key row																Rx USART1 Alt. 2
+P1_6 - Keyboard column 3 (del,C,F,I,x/y)     				Tx USART1 Alt. 2
+P1_5 - Keyboard column top (up,dn,Enter,?,menu)     Tx USART0 Alt 2
+P1_4 - Keyboard row 5 (+,J,x/y,dn)                  Rx USART0 Alt 2
+P1_3 - Keyboard row 4 (G,H,I,up)
+P1_2 - Keyboard row 3 (D,E,F,menu)
+P1_1 - Keyboard row 2 (A,B,C,?)
+P1_0 - Keyboard row 1 (true,false,del,Enter)
+
+P0_0 - A0, AD, on/off key column
+P0_1 - A1, Keyboard column 2 (false,B,E,H,J)
+P0_2 - A2, LCD(7)
+P0_3 - A3, LCD(6)
+P0_4 - A4, LCD(5)
+P0_5 - A5, LCD(4)
+P0_6 - A6, SCL, Serial EEPROM(6)
+P0_7 - A7, SDA, Serial EEPROM(5)
+
+P2_0 - Keyboard column 1 (true,A,D,G,+)
+P2_1 - DD
+P2_2 - DC
+
+Notes:
+	all keyboard rows have 47k pull-up resistors
+	scl/sda have 10k pull-up resistors
+	looks like D2 could be populated with a reset sw (w/ ~10k resistor on C18)?
+
+	25AA08 - 8kB Serial I2C EEPROM
