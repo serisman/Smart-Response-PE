@@ -10,24 +10,32 @@ DEVICE = CC2430
 
 # ---------------------------------------------------------------------
 
-SOURCES = lib/clock.c lib/uart.c lib/num-to-string.c lib/keyboard.c lib/uc1701.c lib/display.c main.c
+BUILDDIR = .build
+ROMDIR = .rom
 
-COMPILE = sdcc -mmcs51 -D$(DEVICE) -DF_CPU=32000000 --std-c11 --max-allocs-per-node 5000 --opt-code-size -I.
+COMPILE = sdcc -mmcs51 -D$(DEVICE) --std-c11 --opt-code-speed --xram-loc 0xE000 --xram-size 0x1F00 -I.
 
-OBJECTS = $(SOURCES:.c=.rel)
+SOURCES = $(wildcard lib/*.c) main.c
+
+OBJECTS = $(patsubst %.c,$(BUILDDIR)/%.rel,$(SOURCES))
 
 # symbolic targets:
-all:	rom.bin
+all: dirs $(ROMDIR)/rom.bin
 
-%.rel: %.c
+dirs:
+	mkdir -p $(BUILDDIR)
+	mkdir -p $(BUILDDIR)/lib
+	mkdir -p $(ROMDIR)
+
+$(BUILDDIR)/%.rel: %.c
 	$(COMPILE) -c -o $@ $<
 
-clean:
-	rm -f *.asm *.lst *.rel *.rst *.sym lib/*.asm lib/*.lst lib/*.rel lib/*.rst lib/*.sym
+clean-all: clean-build clean-rom
+clean-build:
+	rm -r -f $(BUILDDIR)
 clean-rom:
-	rm -f rom.*
+	rm -r -f $(ROMDIR)
 
-# file targets:
-rom.bin: $(OBJECTS)
-	$(COMPILE) --out-fmt-ihx -o rom.ihx $(OBJECTS)
-	makebin rom.ihx > rom.bin
+$(ROMDIR)/rom.bin: $(OBJECTS)
+	$(COMPILE) --out-fmt-ihx -o $(ROMDIR)/rom.ihx $(OBJECTS)
+	makebin $(ROMDIR)/rom.ihx > $(ROMDIR)/rom.bin
