@@ -23,7 +23,7 @@ int8_t scroll_y = 0;
 int8_t scroll_y_dir = 1;
 
 inline void loop() {
-  uint8_t keymap[4];
+	uint8_t keymap[4];
 	uint32_t millis;
 
 	millis = clock_millis();

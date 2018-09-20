@@ -39,31 +39,31 @@ void display_draw_pixel(uint8_t x, uint8_t y, uint8_t color) {
 }
 
 void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uint8_t height, uint8_t color) {
-  int8_t yOffset, row, end_row;
-  uint8_t bitmap_pixel, pixel_mask, screen_pixel;
-  uint8_t __xdata *screen_ptr;
-  uint8_t __xdata *screen_ptr2 = _screen;
+	int8_t yOffset, row, end_row;
+	uint8_t bitmap_pixel, pixel_mask, screen_pixel;
+	uint8_t __xdata *screen_ptr;
+	uint8_t __xdata *screen_ptr2 = _screen;
 
-  // no need to draw at all if we're offscreen
-  if (x+width < 0 /*|| x > SCREEN_WIDTH-1*/ || y+height < 0 || y > SCREEN_HEIGHT-1)
-    return;
+	// no need to draw at all if we're offscreen
+	if (x+width < 0 /*|| x > SCREEN_WIDTH-1*/ || y+height < 0 || y > SCREEN_HEIGHT-1)
+		return;
 
- 	row = y / 8;
-  if (y < 0) {
+	row = y / 8;
+	if (y < 0) {
   	yOffset = 8 - ((0-y) % 8);
-    row--;
-  } else {
-  	yOffset = y % 8;
-  }
+		row--;
+	} else {
+		yOffset = y % 8;
+	}
   end_row = row + (height/8);
   if (height % 8 != 0) end_row++;
   if (end_row > NUM_SCREEN_ROWS)
   	end_row = NUM_SCREEN_ROWS;
   for (; row < end_row; row++) {
-    screen_ptr = _get_screen_ptr(x>=0 ? x : 0, row*8);
+		screen_ptr = _get_screen_ptr(x>=0 ? x : 0, row*8);
 		if (yOffset && row<NUM_SCREEN_ROWS-1 && row >= -1) {
 			screen_ptr2 = _get_screen_ptr(x>=0 ? x : 0, (row+1)*8);
-    }
+		}
 		for (uint8_t iCol = 0; iCol<width; iCol++) {
 			bitmap_pixel = *bitmap;
 			bitmap++;
@@ -93,7 +93,7 @@ void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uin
 }
 
 void display_set_frame_rate(uint8_t rate) {
-  _each_frame_millis = 1000 / rate;
+	_each_frame_millis = 1000 / rate;
 }
 
 uint8_t display_next_frame() {

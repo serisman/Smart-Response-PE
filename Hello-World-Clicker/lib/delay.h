@@ -44,8 +44,8 @@ inline void _delay32_us(uint16_t usec) {
 		xch a,r4
 		xch a,r4
 		xch a,r4
-			nop
-			nop
+		nop
+		nop
 		__endasm;
 	}
 }

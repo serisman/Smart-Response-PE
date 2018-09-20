@@ -48,17 +48,17 @@ UC1701 Commands (seems to match the ST7565 as well)
 
 uint8_t __code _uc1701_init[] = {
 	0xE2,								// System Reset
-  0xA0 | _BV(0),			// Set SEG Direction: Mirror X
-  0xC0 | _BV(3),			// Set COM Direction: Mirror Y
-  0xA2, 							// Set LCD Bias Ratio: 1/9
-  0x28 | _BV3(2,1,0),	// Set Power Control: Boost ON, Voltage Regular On, Voltage Follower On
-  //0x85,							// Not sure why, but real Smart Response PE units send this (according to logic analyzer).
-  0x20 | 5,						// Set Resistor Ratio (contrast) (0-7): 5
-  0x81, 34,						// Set Electronic Volume (contrast) (0-63): 34
-  0xA6,								// Set Inverse Display: OFF
-  0x40 | 48,					// Set Scroll Line: 48
-  0xA4,								// Set All-Pixel-On: OFF
-  0xAE | _BV(0)				// Set Display Enable: ON
+	0xA0 | _BV(0),			// Set SEG Direction: Mirror X
+	0xC0 | _BV(3),			// Set COM Direction: Mirror Y
+	0xA2, 							// Set LCD Bias Ratio: 1/9
+	0x28 | _BV3(2,1,0),	// Set Power Control: Boost ON, Voltage Regular On, Voltage Follower On
+	//0x85,							// Not sure why, but real Smart Response PE units send this (according to logic analyzer).
+	0x20 | 5,						// Set Resistor Ratio (contrast) (0-7): 5
+	0x81, 34,						// Set Electronic Volume (contrast) (0-63): 34
+	0xA6,								// Set Inverse Display: OFF
+	0x40 | 48,					// Set Scroll Line: 48
+	0xA4,								// Set All-Pixel-On: OFF
+	0xAE | _BV(0)				// Set Display Enable: ON
 };
 
 void uc1701_init() {
