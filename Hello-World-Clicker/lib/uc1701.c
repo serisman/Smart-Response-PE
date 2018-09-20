@@ -46,7 +46,7 @@ UC1701 Commands (seems to match the ST7565 as well)
 0xFA + byte				Set Adv. Program Control 0: byte[4]=1, TC=byte[7], WA[1:0] = byte[1:0]
 */
 
-const uint8_t _uc1701_init[] = {
+uint8_t __code _uc1701_init[] = {
 	0xE2,								// System Reset
   0xA0 | _BV(0),			// Set SEG Direction: Mirror X
   0xC0 | _BV(3),			// Set COM Direction: Mirror Y
@@ -91,26 +91,13 @@ void uc1701_clear() {
 	}
 }
 
-//void uc1701_paintScreen(uint8_t *screen) {
-//	for (uint8_t page = 0; page < (SCREEN_HEIGHT/8); page++) {
-//		_uc1701_set_address(page, 0);
-//		for (uint8_t x = 0; x < SCREEN_WIDTH; x++) {
-//			_uc1701_transfer(*screen);
-//			screen++;
-//		}
-//	}
-//}
-
-void uc1701_draw_bitmap(uint8_t column, uint8_t line, const uint8_t *data, uint8_t columns, uint8_t lines) {
-
-	// The bitmap will be clipped at the right/bottom edge of the display...
-	uint8_t my = (line + lines > SCREEN_HEIGHT/8) ? (SCREEN_HEIGHT/8 - line) : lines;
-	uint8_t mx = (column + columns > SCREEN_WIDTH) ? (SCREEN_WIDTH - column) : columns;
-
-	for (uint8_t y = 0; y < my; y++) {
-		_uc1701_set_address(line + y, column);
-		for (uint8_t x = 0; x < mx; x++) {
-			_uc1701_transfer(data[y * columns + x]);
+void uc1701_paint(uint8_t __xdata *screen) {
+	for (uint8_t page = 0; page < (SCREEN_HEIGHT/8); page++) {
+		_uc1701_set_address(page, 0);
+		for (uint8_t x = 0; x < SCREEN_WIDTH; x++) {
+			_uc1701_transfer(*screen);
+			*screen = 0;
+			screen++;
 		}
 	}
 }

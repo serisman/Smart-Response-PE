@@ -12,7 +12,6 @@
 
 void uc1701_init();
 void uc1701_clear();
-//void uc1701_paintScreen(uint8_t *screen);
-void uc1701_draw_bitmap(uint8_t column, uint8_t line, const uint8_t *data, uint8_t columns, uint8_t lines);
+void uc1701_paint(uint8_t __xdata *screen);
 
 #endif /* __uc1701_h_included__ */
