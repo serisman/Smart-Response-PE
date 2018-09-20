@@ -10,10 +10,10 @@ P1_0 - Keyboard row 1 (true,false,del,Enter)
 
 P0_0 - A0, AD, on/off key column
 P0_1 - A1, Keyboard column 2 (false,B,E,H,J)
-P0_2 - A2, LCD(7)
-P0_3 - A3, LCD(6)
-P0_4 - A4, LCD(5)
-P0_5 - A5, LCD(4)
+P0_2 - A2, LCD(7)/RST
+P0_3 - A3, LCD(6)/DC
+P0_4 - A4, LCD(5)/SCK
+P0_5 - A5, LCD(4)/MOSI
 P0_6 - A6, SCL, Serial EEPROM(6)
 P0_7 - A7, SDA, Serial EEPROM(5)
 
