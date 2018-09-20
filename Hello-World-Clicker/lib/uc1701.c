@@ -85,17 +85,27 @@ void uc1701_init() {
 void uc1701_clear() {
 	for (uint8_t page=0; page<=8; page++) {
 		_uc1701_set_address(page, 0);
-		for (uint8_t column=0; column<132; column++) {
+		for (uint8_t column=132; column>0; column--) {
 			_uc1701_transfer(0x00);
 		}
 	}
 }
 
 void uc1701_paint(uint8_t __xdata *screen) {
+	uint8_t data;
 	for (uint8_t page = 0; page < (SCREEN_HEIGHT/8); page++) {
 		_uc1701_set_address(page, 0);
-		for (uint8_t x = 0; x < SCREEN_WIDTH; x++) {
-			_uc1701_transfer(*screen);
+		for (uint8_t x=SCREEN_WIDTH; x>0; x--) {
+			//_uc1701_transfer(*screen); // moved in-line for better performance (good candidate for asm optimization)
+			data = *screen;
+
+			for (uint8_t i = 8; i>0; i--) {
+				PIN_LCD_SCK = 0;
+				PIN_LCD_MOSI = _isBitSet(data,7) ? 1 : 0;
+				PIN_LCD_SCK = 1;
+				data <<= 1;
+			}
+
 			*screen = 0;
 			screen++;
 		}
@@ -113,7 +123,7 @@ void _uc1701_set_address(uint8_t page, uint8_t column) {
 }
 
 void _uc1701_transfer(uint8_t data) {
-	for (uint8_t i = 0; i<8; i++) {
+	for (uint8_t i = 8; i>0; i--) {
 		PIN_LCD_SCK = 0;
 		PIN_LCD_MOSI = _isBitSet(data,7) ? 1 : 0;
 		// NOTE: No additional delays needed.
