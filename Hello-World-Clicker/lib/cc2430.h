@@ -19,6 +19,9 @@
 #define SLEEP_MODE_1						1
 #define SLEEP_MODE_0						0
 
+// PCON (0x87)
+#define PCON_IDLE								0
+
 // CLKCON (0xC6)
 #define CLKCON_OSC32K						7
 #define CLKCON_OSC							6
