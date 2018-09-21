@@ -4,6 +4,7 @@
 This directory contains a sample application that is intended to be run directly on a Smart Response PE Receiver (03-00099-21).
 
 **Features:**
+* Blinks the four LEDS (red, green, Tx, Rx)
 * Sends data over the serial port (the CP2102 is wired up to USART1 Alt. 2)
 
 This is intended to be built using the Small Device C Compiler ([SDCC](http://sdcc.sourceforge.net/)).
