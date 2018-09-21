@@ -1,6 +1,6 @@
 // Name: bitmaps.h
-// Project: Smart-Response-PE/Hello-World-Clicker
-// Author: Stephen Erisman
+// Project: Smart-Response-PE/examples/hello-world-clicker
+// Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-18
 // License: MIT
 

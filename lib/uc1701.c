@@ -1,21 +1,21 @@
 // Name: uc1701.c
 // Project: Smart-Response-PE/lib
-// Author: Stephen Erisman
-// Creation Date: 2018-09-18
+// Author: Stephen Erisman <github@serisman.com>
+// Creation Date: 2018-09-21
 // License: MIT
 
-#include "../hardware.h"
+#include "cc2430.h"
 #include "util.h"
 #include "delay.h"
 #include "uc1701.h"
 
-#define PIN_LCD_RST					P0_2
-#define PIN_LCD_DC					P0_3
-#define PIN_LCD_SCK					P0_4
-#define PIN_LCD_MOSI				P0_5
+#define PIN_LCD_RST					P0,2
+#define PIN_LCD_DC					P0,3
+#define PIN_LCD_SCK					P0,4
+#define PIN_LCD_MOSI				P0,5
 
-inline void _uc1701_set_cmd_mode() { PIN_LCD_DC = 0; }
-inline void _uc1701_set_data_mode() {	PIN_LCD_DC = 1; }
+inline void _uc1701_set_cmd_mode() { clearPin(PIN_LCD_DC); }
+inline void _uc1701_set_data_mode() {	setPin(PIN_LCD_DC); }
 
 void _uc1701_set_address(uint8_t page, uint8_t column);
 void _uc1701_transfer(uint8_t data);
@@ -48,29 +48,29 @@ UC1701 Commands (seems to match the ST7565 as well)
 
 uint8_t __code _uc1701_init[] = {
 	0xE2,								// System Reset
-	0xA0 | _BV(0),			// Set SEG Direction: Mirror X
-	0xC0 | _BV(3),			// Set COM Direction: Mirror Y
+	0xA0 | BV(0),		  	// Set SEG Direction: Mirror X
+	0xC0 | BV(3),			  // Set COM Direction: Mirror Y
 	0xA2, 							// Set LCD Bias Ratio: 1/9
-	0x28 | _BV3(2,1,0),	// Set Power Control: Boost ON, Voltage Regular On, Voltage Follower On
+	0x28 | BV3(2,1,0),	// Set Power Control: Boost ON, Voltage Regular On, Voltage Follower On
 	//0x85,							// Not sure why, but real Smart Response PE units send this (according to logic analyzer).
 	0x20 | 5,						// Set Resistor Ratio (contrast) (0-7): 5
 	0x81, 34,						// Set Electronic Volume (contrast) (0-63): 34
 	0xA6,								// Set Inverse Display: OFF
 	0x40 | 48,					// Set Scroll Line: 48
 	0xA4,								// Set All-Pixel-On: OFF
-	0xAE | _BV(0)				// Set Display Enable: ON
+	0xAE | BV(0)				// Set Display Enable: ON
 };
 
 void uc1701_init() {
 
 	// Set RST, DC, SCK, MOSI as outputs
-	_setBits(P0DIR,_BV4(5,4,3,2));
+	setBits(P0DIR,BV4(5,4,3,2));
 
 	// Reset the LCD
-	PIN_LCD_RST = 0;
-	_delay32_short_us(1);
-	PIN_LCD_RST = 1;
-	_delay32_short_us(5);
+	clearPin(PIN_LCD_RST);
+	delay_us_32mhz(1);
+	setPin(PIN_LCD_RST);
+	delay_us_32mhz(5);
 
 	// Initialize the LCD
 	_uc1701_set_cmd_mode();
@@ -100,9 +100,9 @@ void uc1701_paint(uint8_t __xdata *screen) {
 			data = *screen;
 
 			for (uint8_t i = 8; i>0; i--) {
-				PIN_LCD_SCK = 0;
-				PIN_LCD_MOSI = _isBitSet(data,7) ? 1 : 0;
-				PIN_LCD_SCK = 1;
+				clearPin(PIN_LCD_SCK);
+				writePin(PIN_LCD_MOSI, isBitSet(data,7) ? HIGH : LOW);
+				setPin(PIN_LCD_SCK);
 				data <<= 1;
 			}
 
@@ -124,11 +124,11 @@ void _uc1701_set_address(uint8_t page, uint8_t column) {
 
 void _uc1701_transfer(uint8_t data) {
 	for (uint8_t i = 8; i>0; i--) {
-		PIN_LCD_SCK = 0;
-		PIN_LCD_MOSI = _isBitSet(data,7) ? 1 : 0;
+		clearPin(PIN_LCD_SCK);
+		writePin(PIN_LCD_MOSI, isBitSet(data,7) ? HIGH : LOW);
 		// NOTE: No additional delays needed.
 		// Even at 32 MHz, each cpu cycle takes 31.25 ns. meaning we are already well above the min of 50 ns. low/high clk pulse width
-		PIN_LCD_SCK = 1;
+		setPin(PIN_LCD_SCK);
 		data <<= 1;
 	}
 }

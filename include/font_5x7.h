@@ -1,7 +1,7 @@
 // Name: font_5x7.h
-// Project: Smart-Response-PE/lib
-// Author: Stephen Erisman
-// Creation Date: 2018-09-18
+// Project: Smart-Response-PE/include
+// Author: Stephen Erisman <github@serisman.com>
+// Creation Date: 2018-09-21
 // License: MIT
 
 #ifndef __font_5x7_h_included__

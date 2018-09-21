@@ -12,7 +12,7 @@ This directory contains a sample application that is intended to be run directly
 
 This is intended to be built using the Small Device C Compiler ([SDCC](http://sdcc.sourceforge.net/)).
 
-To build it, execute the `make all` or `make rom.bin` command.
+To build it, execute the `make all` command.
 
 ![working!](https://github.com/serisman/Smart-Response-PE/raw/master/Hello-World-Clicker/hello-world.jpg)
 

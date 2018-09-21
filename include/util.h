@@ -7,7 +7,7 @@
 #ifndef __util_h_included__
 #define __util_h_included__
 
-#define BV(bit)											  (1<<(bit))
+#define BV(bit)											  (uint8_t)(1<<(bit))
 
 #define BV1(b1)											  (uint8_t)(BV(b1))
 #define BV2(b1,b2)										(uint8_t)(BV(b1)|BV(b2))
@@ -28,6 +28,10 @@
 #define areBitsSet(byte,mask)			  	byte & mask
 #define areBitsClear(byte,mask)		  	!(byte & mask)
 
+// ----------------------------------------------------------------------
+
+#define HIGH                          1
+#define LOW                           0
 
 #define PORT(port,pin)                port
 #define PORT_DIR(port,pin)            port ## DIR
@@ -35,10 +39,14 @@
 #define PIN(port,pin)                 port ## _ ## pin
 #define PIN_NUM(port,pin)             pin
 
-#define setPin(pinspec)	  		  	    PIN(pinspec) = 1
-#define clearPin(pinspec)		     	    PIN(pinspec) = 0
-
 #define setPinOutput(pinspec)         setBit(PORT_DIR(pinspec),PIN_NUM(pinspec))
 #define setPinInput(pinspec)          clearBit(PORT_DIR(pinspec),PIN_NUM(pinspec))
+
+#define setPin(pinspec)	  		  	    PIN(pinspec) = HIGH
+#define clearPin(pinspec)		     	    PIN(pinspec) = LOW
+#define writePin(pinspec,value)       PIN(pinspec) = value
+
+#define isPinHigh(pinspec)            PIN(pinspec)
+#define isPinLow(pinspec)             !(PIN(pinspec))
 
 #endif /* __util_h_included__ */

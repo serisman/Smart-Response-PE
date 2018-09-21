@@ -1,11 +1,13 @@
 // Name: uc1701.h
 // Project: Smart-Response-PE/lib
-// Author: Stephen Erisman
-// Creation Date: 2018-09-18
+// Author: Stephen Erisman <github@serisman.com>
+// Creation Date: 2018-09-21
 // License: MIT
 
 #ifndef __uc1701_h_included__
 #define __uc1701_h_included__
+
+#include <stdint.h>
 
 #define SCREEN_WIDTH				128
 #define SCREEN_HEIGHT				48
