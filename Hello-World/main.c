@@ -1,54 +1,64 @@
 // Name: main.c
 // Project: Smart-Response-PE/Hello-World
-// Author: Stephen Erisman
+// Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-14
 // License: MIT
 
-#include <stdio.h>
-
-#include "hardware.h"
+#include "cc2430.h"
 #include "clock.h"
 #include "uart.h"
+#include "string_utils.h"
+
+#define RED_LED				  P0,0
+#define GREEN_LED			  P0,1
+#define TX_LED				  P0,6
+#define RX_LED				  P0,7
+
+char __xdata str_buf[10];
+
+inline void setup() {
+	setPinOutput(RED_LED);    clearPin(RED_LED);
+	setPinOutput(GREEN_LED);  clearPin(GREEN_LED);
+	setPinOutput(TX_LED);     clearPin(TX_LED);
+	setPinOutput(RX_LED);     clearPin(RX_LED);
+
+	uart_init();
+	uart_println("Hello World!");
+}
 
 inline void loop() {
 	uint32_t millis = clock_millis();
-	printf("millis: ");	put_ul(millis);	printf("\r\n");
+	u32_to_str(millis, str_buf);
+	uart_print("millis: "); uart_println(str_buf);
 
-	PIN_RED_LED = 1;
-	PIN_GREEN_LED = 0;
-	PIN_TX_LED = 1;
-	PIN_RX_LED = 0;
+	setPin(RED_LED);
+	clearPin(GREEN_LED);
+	setPin(TX_LED);
+	clearPin(RX_LED);
 	clock_delay_ms(250);
 
-	PIN_TX_LED = 0;
-	PIN_RX_LED = 1;
+	clearPin(TX_LED);
+	setPin(RX_LED);
 	clock_delay_ms(250);
 
-	PIN_RED_LED = 0;
-	PIN_GREEN_LED = 1;
-	PIN_TX_LED = 1;
-	PIN_RX_LED = 0;
+	clearPin(RED_LED);
+	setPin(GREEN_LED);
+	setPin(TX_LED);
+	clearPin(RX_LED);
 	clock_delay_ms(250);
 
-	PIN_TX_LED = 0;
-	PIN_RX_LED = 1;
+	clearPin(TX_LED);
+	setPin(RX_LED);
 	clock_delay_ms(250);
-}
-
-inline void setup() {
-	// TODO... set clock to 32 MHz on boot?
-	hardware_init();
-	clock_init();
-	uart_init();
-	clock_delay_ms(10);	// let the baud rate timer settle in?
-	printf("Hello World!\r\n");
 }
 
 void main() {
+	oscillator_32mhz();
+	clock_init();
 	ENABLE_INTERRUPTS;
 	setup();
 
-	for(;;) {
+	while(1) {
 		loop();
 	}
 }

@@ -1,6 +1,6 @@
 # Name: Makefile
 # Project: Smart-Response-PE/Hello-World
-# Author: Stephen Erisman
+# Author: Stephen Erisman <github@serisman.com>
 # Creation Date: 2018-09-14
 # License: MIT
 
@@ -10,24 +10,43 @@ DEVICE = CC2430
 
 # ---------------------------------------------------------------------
 
-SOURCES = uart.c clock.c main.c
+BIN_DIR = .bin
+BUILD_DIR = .build
+LIB_DIR = .lib
 
-COMPILE = sdcc -mmcs51 -D$(DEVICE) -DF_CPU=16000000 --std-c11 --max-allocs-per-node 5000 --opt-code-size -I.
+COMPILE = sdcc -mmcs51 --std-c11 --opt-code-speed --xram-loc 0xE000 --xram-size 0x1F00
 
-OBJECTS = $(SOURCES:.c=.rel)
+LIB_SOURCES = $(wildcard ../lib/*.c)
+LIB_OBJECTS = $(patsubst ../lib/%.c,$(LIB_DIR)/%.rel,$(LIB_SOURCES))
+LIB = $(LIB_DIR)/smart-pe.lib
+
+SOURCES = main.c
+OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.rel,$(SOURCES))
+ROM_BIN = $(BIN_DIR)/rom.bin
 
 # symbolic targets:
-all:	rom.bin
+all: $(ROM_BIN)
 
-%.rel: %.c
-	$(COMPILE) -c -o $@ $<
+dirs:
+	mkdir -p $(BIN_DIR) $(BUILD_DIR) $(LIB_DIR)
+
+$(BUILD_DIR)/%.rel: %.c
+	$(COMPILE) -c -D$(DEVICE) -I. -I../include -o $@ $<
+
+$(LIB_DIR)/%.rel: ../lib/%.c
+	$(COMPILE) -c -D$(DEVICE) -I. -I../include -o $@ $<
+
+$(LIB): $(LIB_OBJECTS)
+	sdar -rc $@ $(LIB_OBJECTS)
+
+$(ROM_BIN): dirs $(OBJECTS) $(LIB)
+	$(COMPILE) --out-fmt-ihx -o $(BIN_DIR)/rom.ihx $(OBJECTS) $(LIB)
+	makebin $(BIN_DIR)/rom.ihx > $(ROM_BIN)
+
+print-%: ; @echo $* = $($*)
 
 clean:
-	rm -f *.asm *.lst *.rel *.rst *.sym
-clean-rom:
-	rm -f rom.*
-
-# file targets:
-rom.bin: $(OBJECTS)
-	$(COMPILE) --out-fmt-ihx -o rom.ihx $(OBJECTS)
-	makebin rom.ihx > rom.bin
+	rm -r -f $(BUILD_DIR) $(LIB_DIR)
+clean-bin:
+	rm -r -f $(BIN_DIR)
+clean-all: clean clean-bin
