@@ -1,4 +1,4 @@
-// Name: reverse_str.c
+// Name: string_utils/reverse_str.c
 // Project: Smart-Response-PE/lib
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-21

@@ -1,4 +1,4 @@
-// Name: clock_millis.c
+// Name: clock/clock_millis.c
 // Project: Smart-Response-PE/lib
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-21

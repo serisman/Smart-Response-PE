@@ -1,4 +1,4 @@
-// Name: clock_long_delay_ms.c
+// Name: clock/clock_long_delay_ms.c
 // Project: Smart-Response-PE/lib
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-21

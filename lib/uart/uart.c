@@ -1,4 +1,4 @@
-// Name: uart.c
+// Name: uart/uart.c
 // Project: Smart-Response-PE/lib
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-21
