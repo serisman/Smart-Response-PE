@@ -7,6 +7,12 @@
 #ifndef __util_h_included__
 #define __util_h_included__
 
+#define TRUE                          1
+#define FALSE                         0
+
+#define HIGH                          1
+#define LOW                           0
+
 #define BV(bit)											  (uint8_t)(1<<(bit))
 
 #define BV1(b1)											  (uint8_t)(BV(b1))
@@ -29,9 +35,6 @@
 #define areBitsClear(byte,mask)		  	!(byte & mask)
 
 // ----------------------------------------------------------------------
-
-#define HIGH                          1
-#define LOW                           0
 
 #define PORT(port,pin)                port
 #define PORT_DIR(port,pin)            port ## DIR

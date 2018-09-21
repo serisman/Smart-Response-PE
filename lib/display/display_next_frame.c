@@ -13,9 +13,9 @@ uint8_t display_next_frame() {
 
 	if (elapsed_ms >= display_each_frame_millis) {
 		_prev_frame_ms = millis;
-		return 1;
+		return TRUE;
 	}
 
 	clock_delay_ms(1);
-	return 0;
+	return FALSE;
 }
