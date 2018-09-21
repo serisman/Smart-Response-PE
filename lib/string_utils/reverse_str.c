@@ -6,7 +6,7 @@
 
 #include "string_utils.h"
 
-void reverse_str(char *str_buf, uint8_t len) {
+void reverse_str(char __xdata *str_buf, uint8_t len) {
 	uint8_t tmp;
 	uint8_t *ptr1 = str_buf;
 	uint8_t *ptr2 = str_buf + len;

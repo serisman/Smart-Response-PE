@@ -6,7 +6,7 @@
 
 #include "string_utils.h"
 
-void u32_to_str(uint32_t ul, char *str_buf) {
+void u32_to_str(uint32_t ul, char __xdata *str_buf) {
 	uint8_t pos = 0;
 	do {
 		str_buf[pos++] = '0' + (ul % 10);
