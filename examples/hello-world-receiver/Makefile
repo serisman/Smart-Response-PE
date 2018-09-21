@@ -40,7 +40,7 @@ $(LIB): $(LIB_OBJECTS)
 	sdar -rc $@ $(LIB_OBJECTS)
 
 $(ROM_BIN): $(OBJECTS) $(LIB)
-	@mkdir -p $(dir ROM_BIN)
+	@mkdir -p $(dir $(ROM_BIN))
 	$(COMPILE) --out-fmt-ihx -o $(BIN_DIR)/rom.ihx $(OBJECTS) $(LIB)
 	makebin $(BIN_DIR)/rom.ihx > $(ROM_BIN)
 
