@@ -1,5 +1,5 @@
 // Name: main.c
-// Project: Smart-Response-PE/Hello-World
+// Project: Smart-Response-PE/examples/hello-world-receiver
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-14
 // License: MIT

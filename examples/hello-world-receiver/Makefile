@@ -1,5 +1,5 @@
 # Name: Makefile
-# Project: Smart-Response-PE/Hello-World
+# Project: Smart-Response-PE/examples/hello-world-receiver
 # Author: Stephen Erisman <github@serisman.com>
 # Creation Date: 2018-09-14
 # License: MIT
@@ -16,8 +16,8 @@ LIB_DIR = .lib
 
 COMPILE = sdcc -mmcs51 --std-c11 --opt-code-speed --xram-loc 0xE000 --xram-size 0x1F00
 
-LIB_SOURCES = $(wildcard ../lib/*.c)
-LIB_OBJECTS = $(patsubst ../lib/%.c,$(LIB_DIR)/%.rel,$(LIB_SOURCES))
+LIB_SOURCES = $(wildcard ../../lib/*.c)
+LIB_OBJECTS = $(patsubst ../../lib/%.c,$(LIB_DIR)/%.rel,$(LIB_SOURCES))
 LIB = $(LIB_DIR)/smart-pe.lib
 
 SOURCES = main.c
@@ -31,10 +31,10 @@ dirs:
 	mkdir -p $(BIN_DIR) $(BUILD_DIR) $(LIB_DIR)
 
 $(BUILD_DIR)/%.rel: %.c
-	$(COMPILE) -c -D$(DEVICE) -I. -I../include -o $@ $<
+	$(COMPILE) -c -D$(DEVICE) -I. -I../../include -o $@ $<
 
-$(LIB_DIR)/%.rel: ../lib/%.c
-	$(COMPILE) -c -D$(DEVICE) -I. -I../include -o $@ $<
+$(LIB_DIR)/%.rel: ../../lib/%.c
+	$(COMPILE) -c -D$(DEVICE) -I. -I../../include -o $@ $<
 
 $(LIB): $(LIB_OBJECTS)
 	sdar -rc $@ $(LIB_OBJECTS)
