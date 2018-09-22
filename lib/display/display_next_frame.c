@@ -7,15 +7,15 @@
 #include "display.h"
 #include "clock.h"
 
-uint8_t display_next_frame() {
+bool display_next_frame() {
 	uint32_t millis = clock_millis();
 	uint8_t elapsed_ms = millis - _prev_frame_ms;
 
 	if (elapsed_ms >= display_each_frame_millis) {
 		_prev_frame_ms = millis;
-		return TRUE;
+		return true;
 	}
 
 	clock_delay_ms(1);
-	return FALSE;
+	return false;
 }

@@ -7,9 +7,6 @@
 #ifndef __util_h_included__
 #define __util_h_included__
 
-#define TRUE                          1
-#define FALSE                         0
-
 #define HIGH                          1
 #define LOW                           0
 

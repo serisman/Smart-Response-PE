@@ -8,6 +8,7 @@
 #define __display_h_included__
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "uc1701.h"
 
 #define COLOR_BLACK					0
@@ -32,7 +33,7 @@ void display_draw_pixel(uint8_t x, uint8_t y, uint8_t color);
 void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uint8_t height, uint8_t color);
 
 void display_set_frame_rate(uint8_t rate);
-uint8_t display_next_frame();
+bool display_next_frame();
 
 void display_set_cursor(uint8_t x, uint8_t y);
 void display_draw_char(char c);
