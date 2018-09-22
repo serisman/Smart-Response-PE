@@ -9,10 +9,10 @@
 
 bool display_next_frame() {
 	uint32_t millis = clock_millis();
-	uint8_t elapsed_ms = millis - _display_prev_frame_ms;
+	uint8_t elapsed_ms = millis - display_prev_frame_ms;
 
 	if (elapsed_ms >= display_each_frame_millis) {
-		_display_prev_frame_ms = millis;
+		display_prev_frame_ms = millis;
 		return true;
 	}
 

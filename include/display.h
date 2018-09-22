@@ -19,9 +19,9 @@
 #define CHAR_WIDTH					6
 #define CHAR_HEIGHT					8
 
-extern uint8_t __xdata _screen[NUM_SCREEN_ROWS * SCREEN_WIDTH];
+extern uint8_t __xdata screen[NUM_SCREEN_ROWS * SCREEN_WIDTH];
 extern uint8_t display_each_frame_millis;
-extern uint32_t _display_prev_frame_ms;
+extern uint32_t display_prev_frame_ms;
 
 extern uint8_t display_cursor_x;
 extern uint8_t display_cursor_y;
