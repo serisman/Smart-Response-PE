@@ -7,6 +7,9 @@
 #include "display.h"
 #include "font_5x7.h"
 
+uint8_t display_cursor_x = 0;
+uint8_t display_cursor_y = 0;
+
 void display_draw_char(char chr) {
 	if (chr == '\r') {
 		display_cursor_x = 0;
