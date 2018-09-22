@@ -21,7 +21,7 @@
 
 extern uint8_t __xdata _screen[NUM_SCREEN_ROWS * SCREEN_WIDTH];
 extern uint8_t display_each_frame_millis;
-extern uint32_t _prev_frame_ms;
+extern uint32_t _display_prev_frame_ms;
 
 extern uint8_t display_cursor_x;
 extern uint8_t display_cursor_y;
