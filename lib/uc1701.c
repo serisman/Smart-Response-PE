@@ -96,9 +96,9 @@ void uc1701_paint(uint8_t __xdata *screen) {
 	for (uint8_t page = 0; page < (SCREEN_HEIGHT/8); page++) {
 		_uc1701_set_address(page, 0);
 		for (uint8_t x=SCREEN_WIDTH; x>0; x--) {
-			//_uc1701_transfer(*screen); // moved in-line for better performance (good candidate for asm optimization)
 			data = *screen;
 
+			//_uc1701_transfer(data); // moved in-line for better performance (good candidate for asm optimization)
 			for (uint8_t i = 8; i>0; i--) {
 				clearPin(PIN_LCD_SCK);
 				writePin(PIN_LCD_MOSI, isBitSet(data,7) ? HIGH : LOW);
@@ -106,7 +106,7 @@ void uc1701_paint(uint8_t __xdata *screen) {
 				data <<= 1;
 			}
 
-			*screen = 0;
+			*screen = 0;	// Might as well clear the screen buffer while we're here
 			screen++;
 		}
 	}
