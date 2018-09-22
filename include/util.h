@@ -13,16 +13,21 @@
 #define HIGH                          1
 #define LOW                           0
 
+#define ARG1(a,...)										a
+#define ARG2(a,b,...)									b
+
+// ----------------------------------------------------------------------
+
 #define BV(bit)											  (uint8_t)(1<<(bit))
 
-#define BV1(b1)											  (uint8_t)(BV(b1))
-#define BV2(b1,b2)										(uint8_t)(BV(b1)|BV(b2))
-#define BV3(b1,b2,b3)							  	(uint8_t)(BV(b1)|BV(b2)|BV(b3))
-#define BV4(b1,b2,b3,b4)							(uint8_t)(BV(b1)|BV(b2)|BV(b3)|BV(b4))
-#define BV5(b1,b2,b3,b4,b5)					  (uint8_t)(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5))
-#define BV6(b1,b2,b3,b4,b5,b6)				(uint8_t)(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6))
-#define BV7(b1,b2,b3,b4,b5,b6,b7)		  (uint8_t)(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6)|BV(b7))
-#define BV8(b1,b2,b3,b4,b5,b6,b7,b8)	(uint8_t)(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6)|BV(b7)|BV(b8))
+#define BV1(b1)											  (BV(b1))
+#define BV2(b1,b2)										(BV(b1)|BV(b2))
+#define BV3(b1,b2,b3)							  	(BV(b1)|BV(b2)|BV(b3))
+#define BV4(b1,b2,b3,b4)							(BV(b1)|BV(b2)|BV(b3)|BV(b4))
+#define BV5(b1,b2,b3,b4,b5)					  (BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5))
+#define BV6(b1,b2,b3,b4,b5,b6)				(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6))
+#define BV7(b1,b2,b3,b4,b5,b6,b7)		  (BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6)|BV(b7))
+#define BV8(b1,b2,b3,b4,b5,b6,b7,b8)	(BV(b1)|BV(b2)|BV(b3)|BV(b4)|BV(b5)|BV(b6)|BV(b7)|BV(b8))
 
 #define setBit(byte,bit)							byte |= BV(bit)
 #define clearBit(byte,bit)						byte &= ~(BV(bit))
@@ -36,20 +41,36 @@
 
 // ----------------------------------------------------------------------
 
-#define PORT(port,pin)                port
-#define PORT_DIR(port,pin)            port ## DIR
-#define PORT_SEL(port,pin)            port ## SEL
-#define PIN(port,pin)                 port ## _ ## pin
-#define PIN_NUM(port,pin)             pin
+#define PORT_EX(port,pin)             port
+#define PORT_DIR_EX(port,pin)         port ## DIR
+#define PORT_SEL_EX(port,pin)         port ## SEL
+#define PIN_EX(port,pin)              port ## _ ## pin
 
-#define setPinOutput(pinspec)         setBit(PORT_DIR(pinspec),PIN_NUM(pinspec))
-#define setPinInput(pinspec)          clearBit(PORT_DIR(pinspec),PIN_NUM(pinspec))
+#define setPinOutput_EX(port,pin)			setBit(PORT_DIR_EX(port,pin),pin)
+#define setPinInput_EX(port,pin)			clearBit(PORT_DIR_EX(port,pin),pin)
 
-#define setPin(pinspec)	  		  	    PIN(pinspec) = HIGH
-#define clearPin(pinspec)		     	    PIN(pinspec) = LOW
-#define writePin(pinspec,value)       PIN(pinspec) = value
+#define setPin_EX(port,pin)	  		  	PIN_EX(port,pin) = HIGH
+#define clearPin_EX(port,pin)		    	PIN_EX(port,pin) = LOW
+#define writePin_EX(port,pin,value) 	PIN_EX(port,pin) = value
 
-#define isPinHigh(pinspec)            PIN(pinspec)
-#define isPinLow(pinspec)             !(PIN(pinspec))
+#define isPinHigh_EX(port,pin)        PIN_EX(port,pin)
+#define isPinLow_EX(port,pin)         !(PIN_EX(port,pin))
+
+// ----------------------------------------------------------------------
+
+#define PORT(pinspec)                	PORT_EX(pinspec)
+#define PORT_DIR(pinspec)            	PORT_DIR_EX(pinspec)
+#define PORT_SEL(pinspec)            	PORT_SEL_EX(pinspec)
+#define PIN(pinspec)                 	PIN_EX(pinspec)
+
+#define setPinOutput(pinspec)         setBit(PORT_DIR_EX(pinspec),ARG2(pinspec))
+#define setPinInput(pinspec)          clearBit(PORT_DIR_EX(pinspec),ARG2(pinspec))
+
+#define setPin(pinspec)	  		  	    PIN_EX(pinspec) = HIGH
+#define clearPin(pinspec)		     	    PIN_EX(pinspec) = LOW
+#define writePin(pinspec,value)       PIN_EX(pinspec) = value
+
+#define isPinHigh(pinspec)            PIN_EX(pinspec)
+#define isPinLow(pinspec)             !(PIN_EX(pinspec))
 
 #endif /* __util_h_included__ */

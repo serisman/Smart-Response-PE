@@ -22,50 +22,38 @@
 #define PIN_KB_ROW_4				P1,3
 #define PIN_KB_ROW_5				P1,4
 
+#define _keyboard_scan_col(keys_x,PIN_KB_COL_x)	\
+	setPinOutput_EX(PIN_KB_COL_x); \
+	clearPin_EX(PIN_KB_COL_x); \
+	keys_x = _keypad_scan_rows(); \
+	setPin_EX(PIN_KB_COL_x); \
+	setPinInput_EX(PIN_KB_COL_x);
+
 uint8_t _keypad_scan_rows();
 
 void keypad_scan(uint8_t __xdata *keymap) {
-	uint8_t keys0,keys1,keys2,keys3;
+	uint8_t keys_0,keys_1,keys_2,keys_3;
 
 	//_clearBits(P1DIR,BV6(7,4,3,2,1,0)); // Set keypad rows as inputs
 	clearBits(P1DIR,BV5(4,3,2,1,0)); // Set keypad rows as inputs
 
-	setPinOutput(PIN_KB_COL_TOP);
-	clearPin(PIN_KB_COL_TOP);
-	keys0 = _keypad_scan_rows();
-	setPin(PIN_KB_COL_TOP);
-	setPinInput(PIN_KB_COL_TOP);
+	_keyboard_scan_col(keys_0, PIN_KB_COL_TOP);
+	_keyboard_scan_col(keys_1, PIN_KB_COL_1);
+	_keyboard_scan_col(keys_2, PIN_KB_COL_2);
+	_keyboard_scan_col(keys_3, PIN_KB_COL_3);
 
 	// Read the on/off button
 //	setPinOutput(PIN_KB_PWR_COL);
 //	clearPin(PIN_KB_PWR_COL);
 //	if (isPinLow(PIN_KB_PWR_ROW))
-//		keys0 |= BV(7);
+//		keys_0 |= BV(7);
 //	setPin(PIN_KB_PWR_COL);
 //	setPinInput(PIN_KB_PWR_COL);
 
-	setPinOutput(PIN_KB_COL_1);
-	clearPin(PIN_KB_COL_1);
-	keys1 = _keypad_scan_rows();
-	setPin(PIN_KB_COL_1);
-	setPinInput(PIN_KB_COL_1);
-
-	setPinOutput(PIN_KB_COL_2);
-	clearPin(PIN_KB_COL_2);
-	keys2 = _keypad_scan_rows();
-	setPin(PIN_KB_COL_2);
-	setPinInput(PIN_KB_COL_2);
-
-	setPinOutput(PIN_KB_COL_3);
-	clearPin(PIN_KB_COL_3);
-	keys3 = _keypad_scan_rows();
-	setPin(PIN_KB_COL_3);
-	setPinInput(PIN_KB_COL_3);
-
-	*keymap = keys0;	keymap++;
-	*keymap = keys1;	keymap++;
-	*keymap = keys2;	keymap++;
-	*keymap = keys3;
+	*keymap = keys_0;	keymap++;
+	*keymap = keys_1;	keymap++;
+	*keymap = keys_2;	keymap++;
+	*keymap = keys_3;
 }
 
 // private methods --------------------------------------------------------
