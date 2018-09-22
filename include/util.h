@@ -7,6 +7,8 @@
 #ifndef __util_h_included__
 #define __util_h_included__
 
+#include <stdint.h>
+
 #define HIGH                          1
 #define LOW                           0
 
@@ -69,5 +71,11 @@
 
 #define isPinHigh(pinspec)            PIN_EX(pinspec)
 #define isPinLow(pinspec)             !(PIN_EX(pinspec))
+
+// ----------------------------------------------------------------------
+
+extern const uint8_t __code util_bit_to_mask[];
+
+uint8_t util_mask_to_bit(uint8_t mask);
 
 #endif /* __util_h_included__ */

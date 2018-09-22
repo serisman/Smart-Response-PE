@@ -7,13 +7,10 @@
 #include "util.h"
 #include "display.h"
 
-// It is faster and produces less code to look this up rather than calculate it in runtime!
-uint8_t __code _bitmasks[] = { BV(0), BV(1), BV(2), BV(3), BV(4), BV(5), BV(6), BV(7) };
-
 void display_draw_pixel(uint8_t x, uint8_t y, uint8_t color) {
 	uint8_t __xdata *screen_ptr = display_get_screen_ptr(x,y);
 	uint8_t pixel = *screen_ptr;
-	uint8_t bitMask = _bitmasks[y % 8];
+	uint8_t bitMask = util_bit_to_mask[y % 8];
 	if (color)
 		pixel &= ~bitMask;
 	else
