@@ -5,6 +5,7 @@
 // License: MIT
 
 #include "cc2430.h"
+#include "util.h"
 #include "clock.h"
 #include "uart.h"
 #include "display.h"
@@ -15,14 +16,13 @@
 
 char __xdata str_buf[10];
 
-uint32_t prev_millis = 0;
-uint8_t __xdata prev_keymap[4] = {0,0,0,0};
+uint32_t __xdata prev_millis = 0;
 
-int8_t scroll_x = 0;
-int8_t scroll_x_dir = 1;
+int8_t __xdata scroll_x = 0;
+int8_t __xdata scroll_x_dir = 1;
 
-int8_t scroll_y = 0;
-int8_t scroll_y_dir = 1;
+int8_t __xdata scroll_y = 0;
+int8_t __xdata scroll_y_dir = 1;
 
 inline void setup() {
 	uart_init();
@@ -33,9 +33,13 @@ inline void setup() {
 }
 
 inline void loop() {
-	uint8_t __xdata keymap[4];
 	uint32_t millis;
 
+	// Wait until its time to render our next frame
+	if (!display_next_frame())
+		return;
+
+	// Send current millis() value to the UART
 	millis = clock_millis();
 	u32_to_str(millis, str_buf);
 	if (millis-prev_millis >= 1000) {
@@ -43,47 +47,86 @@ inline void loop() {
 		prev_millis += 1000;
 	}
 
+	// Poll the keypad (disable/enable UART to reduce shared pin conflicts)
 	uart_disable();
-	keypad_scan(keymap);
+	keypad_poll();
 	uart_enable();
-	if (keymap[0] != prev_keymap[0] || keymap[1] != prev_keymap[1] || keymap[2] != prev_keymap[2] || keymap[3] != prev_keymap[3]) {
+
+	// Send the keypad keymaps to the UART (if it changed)
+	if (keypad_changed()) {
 		uart_print("keymap: ");
 		for (uint8_t i=0; i<4; i++) {
-			prev_keymap[i] = keymap[i];
-			u8_to_bin_str(keymap[i], 5, str_buf);
+			u8_to_bin_str(keypad_get_keymap(i), 5, str_buf);
 			uart_print(str_buf); uart_print(" ");
 		}
 		uart_println("");
 	}
 
-	if (!display_next_frame())
-		return;
+	// Send the name of any just pressed/released buttons to the UART
+	for (uint8_t col=0; col<4; col++) {
+		for (uint8_t row=0; row<5; row++) {
+			uint8_t mask = util_bit_to_mask[row];
+			if (keypad_just_pressed(col, mask)) {
+				uart_print("key pressed: "); uart_println(keypad_get_button_name(col, mask));
+			}
+			if (keypad_just_released(col, mask)) {
+				uart_print("key released: "); uart_println(keypad_get_button_name(col, mask));
+			}
+		}
+	}
 
+	// Scroll the smar logo bitmap horizontally
 	display_draw_bitmap(scroll_x, 0, bmp_smart_logo, 60, 16, COLOR_BLACK);
 	scroll_x += scroll_x_dir;
 	if (scroll_x + (uint8_t)60 > SCREEN_WIDTH-35 || scroll_x + (uint8_t)(60/2) < 0) {
 		scroll_x_dir = (uint8_t)0- scroll_x_dir;
 	}
 
+	// Scroll the wolf bitmap vertically
 	display_draw_bitmap(SCREEN_WIDTH-35, scroll_y, bmp_wolf, 35, 48, COLOR_BLACK);
 	scroll_y += scroll_y_dir;
 	if (scroll_y + (uint8_t)(48/2) > SCREEN_HEIGHT || scroll_y + (uint8_t)(48/2) < 0) {
 		scroll_y_dir = (uint8_t)0- scroll_y_dir;
 	}
 
+	// Display Hello World!
 	display_set_cursor(3,17);
 	display_print("Hello World!");
 
+	// Display the current millis() value
 	display_set_cursor(3,25);
 	u32_to_str(millis, str_buf);
 	display_print(str_buf); display_print(" ms.");
 
+	// Display the name of any currently pressed buttons
+	for (uint8_t col=0; col<4; col++) {
+		for (uint8_t row=0; row<5; row++) {
+			uint8_t mask = util_bit_to_mask[row];
+			if (keypad_pressed(col, mask)) {
+				display_set_cursor(3,25);
+				display_print(keypad_get_button_name(col, mask));
+				display_print(" pressed!");
+			}
+		}
+	}
+
+	// Display the keypad keymaps
 	display_set_cursor(12,33);
 	for (uint8_t i=0; i<4; i++) {
-		u8_to_bin_str(keymap[i], 5, str_buf);
+		u8_to_bin_str(keypad_get_keymap(i), 5, str_buf);
 		display_print(str_buf); display_print((i == 1) ? "\r\n\t" : " ");
 	}
 
+	// Invert the screen if the Enter button was just pressed
+	if (keypad_just_pressed(BUTTON_ENTER)) {
+		display_invert(true);
+	}
+	// Revert the screen if the Enter button was just released
+	if (keypad_just_released(BUTTON_ENTER)) {
+		display_invert(false);
+	}
+
+	// Paint the screen buffer to the LCD
 	display_paint();
 }
 
