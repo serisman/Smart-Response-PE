@@ -43,7 +43,9 @@ inline void loop() {
 		prev_millis += 1000;
 	}
 
+	uart_disable();
 	keypad_scan(keymap);
+	uart_enable();
 	if (keymap[0] != prev_keymap[0] || keymap[1] != prev_keymap[1] || keymap[2] != prev_keymap[2] || keymap[3] != prev_keymap[3]) {
 		uart_print("keymap: ");
 		for (uint8_t i=0; i<4; i++) {

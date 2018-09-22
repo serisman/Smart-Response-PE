@@ -6,7 +6,6 @@
 
 #include "cc2430.h"
 #include "util.h"
-//#include "uart.h"
 #include "keypad.h"
 
 //#define PIN_KB_PWR_COL			P0,0
@@ -26,8 +25,6 @@
 uint8_t _keypad_scan_rows();
 
 void keypad_scan(uint8_t __xdata *keymap) {
-  //uart_disable();
-
 	//_clearBits(P1DIR,BV6(7,4,3,2,1,0)); // Set keypad rows as inputs
 	clearBits(P1DIR,BV5(4,3,2,1,0)); // Set keypad rows as inputs
 
@@ -62,8 +59,6 @@ void keypad_scan(uint8_t __xdata *keymap) {
 	keymap[3] = _keypad_scan_rows();
 	setPin(PIN_KB_COL_3);
 	setPinInput(PIN_KB_COL_3);
-
-	//uart_enable();
 }
 
 // private methods --------------------------------------------------------
