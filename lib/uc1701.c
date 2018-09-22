@@ -17,6 +17,7 @@
 inline void _uc1701_set_cmd_mode() { clearPin(PIN_LCD_DC); }
 inline void _uc1701_set_data_mode() {	setPin(PIN_LCD_DC); }
 
+void _uc1701_cmd(uint8_t cmd);
 void _uc1701_set_address(uint8_t page, uint8_t column);
 void _uc1701_transfer(uint8_t data);
 
@@ -91,7 +92,7 @@ void uc1701_clear() {
 	}
 }
 
-void uc1701_paint(uint8_t __xdata *screen) {
+void uc1701_paint(uint8_t __xdata *screen, bool clear) {
 	uint8_t data;
 	for (uint8_t page = 0; page < (SCREEN_HEIGHT/8); page++) {
 		_uc1701_set_address(page, 0);
@@ -106,13 +107,24 @@ void uc1701_paint(uint8_t __xdata *screen) {
 				data <<= 1;
 			}
 
-			*screen = 0;	// Might as well clear the screen buffer while we're here
+			if (clear)
+				*screen = 0;
 			screen++;
 		}
 	}
 }
 
+void uc1701_invert(bool invert) {
+	_uc1701_cmd(0xA6 | invert);		// Set Inverse Display: OFF/ON
+}
+
 // private methods --------------------------------------------------------
+
+void _uc1701_cmd(uint8_t cmd) {
+	_uc1701_set_cmd_mode();
+	_uc1701_transfer(cmd);
+	_uc1701_set_data_mode();
+}
 
 void _uc1701_set_address(uint8_t page, uint8_t column) {
 	_uc1701_set_cmd_mode();

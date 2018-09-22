@@ -20,6 +20,7 @@
 #define CHAR_HEIGHT					8
 
 extern uint8_t __xdata screen[NUM_SCREEN_ROWS * SCREEN_WIDTH];
+
 extern uint8_t display_each_frame_millis;
 extern uint32_t display_prev_frame_ms;
 
@@ -27,6 +28,7 @@ extern uint8_t display_cursor_x;
 extern uint8_t display_cursor_y;
 
 inline void display_init();
+inline void display_invert(bool invert);
 inline void display_paint();
 uint8_t __xdata *display_get_screen_ptr(uint8_t x, uint8_t y);
 void display_draw_pixel(uint8_t x, uint8_t y, uint8_t color);

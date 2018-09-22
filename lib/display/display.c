@@ -18,6 +18,10 @@ inline void display_init() {
 	uc1701_init();
 }
 
+inline void display_invert(bool invert) {
+	uc1701_invert(invert);
+}
+
 inline void display_paint() {
-	uc1701_paint(screen);
+	uc1701_paint(screen, true);
 }

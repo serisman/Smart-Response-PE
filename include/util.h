@@ -74,7 +74,7 @@
 
 // ----------------------------------------------------------------------
 
-extern const uint8_t __code util_bit_to_mask[];
+extern const uint8_t __code util_bit_to_mask[8];
 
 uint8_t util_mask_to_bit(uint8_t mask);
 

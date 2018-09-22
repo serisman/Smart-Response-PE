@@ -7,4 +7,4 @@
 #include "util.h"
 
 // It is faster and produces less code to look this up rather than calculate it in runtime!
-const uint8_t __code util_bit_to_mask[] = { BV(0), BV(1), BV(2), BV(3), BV(4), BV(5), BV(6), BV(7) };
+const uint8_t __code util_bit_to_mask[8] = { BV(0), BV(1), BV(2), BV(3), BV(4), BV(5), BV(6), BV(7) };
