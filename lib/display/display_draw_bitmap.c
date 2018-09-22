@@ -8,7 +8,7 @@
 
 void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uint8_t height, uint8_t color) {
 	int8_t yOffset, row, end_row;
-	uint8_t bitmap_pixel, pixel_mask, screen_pixel, screen_mask;
+	uint8_t bitmap_pixel, pixel_mask, screen_pixel;
 	uint8_t __xdata *screen_ptr;
 	uint8_t __xdata *screen_ptr2;
 
@@ -40,9 +40,8 @@ void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uin
 				if (row >= 0) {
 					pixel_mask = bitmap_pixel << yOffset;
 					screen_pixel = *screen_ptr;
-					screen_mask = 0xFF << yOffset;
-					if (color == COLOR_BLACK)				{screen_pixel &= ~screen_mask; screen_pixel |= pixel_mask;}
-					else if (color == COLOR_WHITE)	{screen_pixel |= screen_mask; screen_pixel &= ~pixel_mask;}
+					if (color == COLOR_BLACK)				screen_pixel |= pixel_mask;
+					else if (color == COLOR_WHITE)	screen_pixel &= ~pixel_mask;
 					else														screen_pixel ^= pixel_mask;
 					*screen_ptr = screen_pixel;
 					screen_ptr++;
@@ -50,9 +49,8 @@ void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uin
 				if (yOffset && row<NUM_SCREEN_ROWS-1 && row >= -1) {
 					pixel_mask = bitmap_pixel >> (8-yOffset);
 					screen_pixel = *screen_ptr2;
-					screen_mask = 0xFF << (8-yOffset);
-					if (color == COLOR_BLACK)				{screen_pixel &= ~screen_mask; screen_pixel |= pixel_mask;}
-					else if (color == COLOR_WHITE)	{screen_pixel |= screen_mask; screen_pixel &= ~pixel_mask;}
+					if (color == COLOR_BLACK)				screen_pixel |= pixel_mask;
+					else if (color == COLOR_WHITE)	screen_pixel &= ~pixel_mask;
 					else														screen_pixel ^= pixel_mask;
 					*screen_ptr2 = screen_pixel;
 					screen_ptr2++;

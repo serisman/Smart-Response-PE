@@ -15,7 +15,8 @@ void display_draw_char(char chr) {
 	} else if (chr == '\n') {
 		display_cursor_y += CHAR_HEIGHT;
 	} else if (chr >= ' ' && chr <= '~') { // ASCII printable only
-		display_draw_bitmap(display_cursor_x, display_cursor_y, &font_5x7[(chr-' ')*5], CHAR_WIDTH-1, CHAR_HEIGHT, COLOR_BLACK);
+		display_draw_bitmap(display_cursor_x, display_cursor_y, font_5x7_clear, CHAR_WIDTH, CHAR_HEIGHT, COLOR_WHITE); // clear behind char
+		display_draw_bitmap(display_cursor_x, display_cursor_y, &font_5x7[(chr-' ')*5], CHAR_WIDTH-1, CHAR_HEIGHT, COLOR_BLACK);	// draw char
 		display_cursor_x += CHAR_WIDTH;
 	}
 }
