@@ -7,9 +7,8 @@
 #include "uart.h"
 
 void uart_print(char *str) {
-	while (*str != 0) {
+	while (*str) {
 		uart_wait_for_tx_idle();
-		UxDBUF = *str;
-		str++;
+		UxDBUF = *str++;
 	}
 }

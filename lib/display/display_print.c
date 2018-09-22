@@ -7,8 +7,7 @@
 #include "display.h"
 
 void display_print(char *str) {
-	while (*str != 0) {
-		display_draw_char(*str);
-		str++;
+	while (*str) {
+		display_draw_char(*str++);
 	}
 }

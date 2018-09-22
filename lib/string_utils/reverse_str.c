@@ -7,19 +7,15 @@
 #include "string_utils.h"
 
 void reverse_str(char __xdata *str_buf, uint8_t len) {
-	uint8_t tmp;
-	uint8_t *ptr1 = str_buf;
-	uint8_t *ptr2 = str_buf + len;
+	char tmp;
+	char __xdata *left = str_buf;
+	char __xdata *right = str_buf + len;
 
-	*ptr2 = 0;
-	ptr2--;
+	*right-- = 0;
 	len /= (uint8_t)2;
-	while (len > 0) {
-		tmp = *ptr1;
-		*ptr1 = *ptr2;
-		*ptr2 = tmp;
-		ptr1++;
-		ptr2--;
-		len--;
+	while (len--) {
+		tmp = *left;
+		*left++ = *right;
+		*right-- = tmp;
 	}
 }
