@@ -10,7 +10,7 @@ void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uin
 	int8_t yOffset, row, end_row;
 	uint8_t bitmap_pixel, pixel_mask, screen_pixel;
 	uint8_t __xdata *screen_ptr;
-	uint8_t __xdata *screen_ptr2 = screen_ptr;
+	uint8_t __xdata *screen_ptr2;
 
 	// no need to draw at all if we're offscreen
 	if (x+width < 0 /*|| x > SCREEN_WIDTH-1*/ || y+height < 0 || y > SCREEN_HEIGHT-1)
