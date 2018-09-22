@@ -14,7 +14,7 @@ This is intended to be built using the Small Device C Compiler ([SDCC](http://sd
 
 To build it, execute the `make all` command.
 
-![working!](https://github.com/serisman/Smart-Response-PE/raw/master/Hello-World-Clicker/hello-world.jpg)
+![working!](https://github.com/serisman/Smart-Response-PE/raw/master/examples/hello-world-clicker/hello-world.jpg)
 
 ### Programming the CC2430
 Programming the CC2430 requires a capable programming device.
