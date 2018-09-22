@@ -1,7 +1,8 @@
 .idea
-Hello-World/*.asm
-Hello-World/*.lst
-Hello-World/*.rel
-Hello-World/*.rst
-Hello-World/*.sym
-Hello-World/rom.*
+*.asm
+*.lst
+*.rel
+*.rst
+*.sym
+*.lib
+rom.*
