@@ -10,44 +10,42 @@ DEVICE = CC2430
 
 # ---------------------------------------------------------------------
 
-ROOT_DIR = ../../
-BIN_DIR = .bin
+ROOT_DIR = ../..
 BUILD_DIR = .build
-LIB_DIR = .lib
-
-COMPILE = sdcc -mmcs51 --std-c11 --opt-code-speed --xram-loc 0xE000 --xram-size 0x1F00
 
 LIB_SOURCES = $(wildcard $(ROOT_DIR)/lib/*.c) $(wildcard $(ROOT_DIR)/lib/**/*.c)
-LIB_OBJECTS = $(patsubst $(ROOT_DIR)/lib/%.c,$(LIB_DIR)/%.rel,$(LIB_SOURCES))
-LIB = $(LIB_DIR)/smart-pe.lib
+LIB_OBJECTS = $(patsubst $(ROOT_DIR)/lib/%.c,$(BUILD_DIR)/lib/%.rel,$(LIB_SOURCES))
 
 SOURCES = main.c
 OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.rel,$(SOURCES))
-ROM_BIN = $(BIN_DIR)/rom.bin
+
+COMPILE = sdcc -mmcs51 -c --std-c11 --opt-code-speed -D$(DEVICE) -I. -I$(ROOT_DIR)/include
+BUILD_LIB = sdar -rc
+LINK = sdcc -mmcs51 --xram-loc 0xE000 --xram-size 0x1F00
 
 # symbolic targets:
-all: $(ROM_BIN)
-
-$(BUILD_DIR)/%.rel: %.c
-	@mkdir -p $(dir $@)
-	$(COMPILE) -c -D$(DEVICE) -I. -I$(ROOT_DIR)include -o $@ $<
-
-$(LIB_DIR)/%.rel: $(ROOT_DIR)/lib/%.c
-	@mkdir -p $(dir $@)
-	$(COMPILE) -c -D$(DEVICE) -I. -I$(ROOT_DIR)include -o $@ $<
-
-$(LIB): $(LIB_OBJECTS)
-	sdar -rc $@ $(LIB_OBJECTS)
-
-$(ROM_BIN): $(OBJECTS) $(LIB)
-	@mkdir -p $(dir $(ROM_BIN))
-	$(COMPILE) --out-fmt-ihx -o $(BIN_DIR)/rom.ihx $(OBJECTS) $(LIB)
-	makebin $(BIN_DIR)/rom.ihx > $(ROM_BIN)
+all: rom.bin
 
 print-%: ; @echo $* = $($*)
 
+$(BUILD_DIR)/%.rel: %.c
+	@mkdir -p $(dir $@)
+	$(COMPILE) -o $@ $<
+
+$(BUILD_DIR)/lib/%.rel: $(ROOT_DIR)/lib/%.c
+	@mkdir -p $(dir $@)
+	$(COMPILE) -o $@ $<
+
+$(BUILD_DIR)/lib.lib: $(LIB_OBJECTS)
+	$(BUILD_LIB) $@ $(LIB_OBJECTS)
+
+$(BUILD_DIR)/rom.ihx: $(OBJECTS) $(BUILD_DIR)/lib.lib
+	@mkdir -p $(dir $(BUILD_DIR))
+	$(LINK) --out-fmt-ihx -o $(BUILD_DIR)/rom.ihx $(OBJECTS) $(BUILD_DIR)/lib.lib
+
+rom.bin: $(BUILD_DIR)/rom.ihx
+	makebin $(BUILD_DIR)/rom.ihx > rom.bin
+
 clean:
-	rm -r -f $(BUILD_DIR) $(LIB_DIR)
-clean-bin:
-	rm -r -f $(BIN_DIR)
-clean-all: clean clean-bin
+	rm -r -f $(BUILD_DIR)
+
