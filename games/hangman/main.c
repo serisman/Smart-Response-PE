@@ -12,10 +12,11 @@
 
 #include "cc2430.h"
 #include "util.h"
+#include "string_utils.h"
 #include "clock.h"
 #include "display.h"
 #include "keypad.h"
-#include "string_utils.h"
+#include "eeprom.h"
 
 #include "words.h"
 
@@ -31,6 +32,10 @@
 #define MODE_PLAY     2
 #define MODE_CORRECT  4
 #define MODE_DEAD     5
+
+#define EEPROM_BASE_ADDR      72
+#define EEPROM_WINS_ADDR      EEPROM_BASE_ADDR + 2
+#define EEPROM_LOSSES_ADDR    EEPROM_BASE_ADDR + 3
 
 uint8_t mode = MODE_TITLE;
 bool paused = false;
@@ -74,9 +79,15 @@ inline void setup() {
   display_init();
   display_set_frame_rate(30);
 
-//  EEPROM_init();
-//  wins = EEPROM_getWins();
-//  losses = EEPROM_getLosses();
+  if (eeprom_read_byte(EEPROM_BASE_ADDR) == 'H' && eeprom_read_byte(EEPROM_BASE_ADDR + 1) == 'M') {
+    wins = eeprom_read_byte(EEPROM_WINS_ADDR);
+    losses = eeprom_read_byte(EEPROM_LOSSES_ADDR);
+  } else {
+    eeprom_write_byte(EEPROM_BASE_ADDR, 'H');
+    eeprom_write_byte(EEPROM_BASE_ADDR + 1, 'M');
+    eeprom_write_byte(EEPROM_WINS_ADDR, wins);
+    eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+  }
 }
 
 inline void loop() {
@@ -187,7 +198,8 @@ void nextStatsFrame() {
 void resetStats() {
   wins = 0;
   losses = 0;
-  //EEPROM_saveScore(wins, losses);
+  eeprom_write_byte(EEPROM_WINS_ADDR, wins);
+  eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
 }
 
 void drawStats() {
@@ -427,7 +439,7 @@ void scoreResponse(char letter) {
     // sound.tones(soundWin);
     mode = MODE_CORRECT;
     wins++;
-    // EEPROM_saveScore(wins, losses);
+    eeprom_write_byte(EEPROM_WINS_ADDR, wins);
   //} else if (letterOk) {
     // sound.tones(soundCorrect);
   } else if (!letterOk) {
@@ -436,7 +448,7 @@ void scoreResponse(char letter) {
       // sound.tones(soundDead);
       mode = MODE_DEAD;
       losses++;
-      // EEPROM_saveScore(wins, losses);
+      eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
     //} else {
       // sound.tones(soundIncorrect);
     }
