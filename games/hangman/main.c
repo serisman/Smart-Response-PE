@@ -19,12 +19,12 @@
 
 #include "words.h"
 
-#define UP_BUTTON			BUTTON_UP
-#define DOWN_BUTTON		BUTTON_DOWN
-#define LEFT_BUTTON		BUTTON_T_Y
-#define RIGHT_BUTTON	BUTTON_F_N
-#define A_BUTTON			BUTTON_MENU
-#define B_BUTTON			BUTTON_QUESTION
+#define UP_BUTTON     BUTTON_UP
+#define DOWN_BUTTON   BUTTON_DOWN
+#define LEFT_BUTTON   BUTTON_T_Y
+#define RIGHT_BUTTON  BUTTON_F_N
+#define A_BUTTON      BUTTON_MENU
+#define B_BUTTON      BUTTON_QUESTION
 
 #define MODE_TITLE    0
 #define MODE_STATS    1
@@ -71,8 +71,8 @@ void scoreResponse(char letter);
 void pickAWord();
 
 inline void setup() {
-	display_init();
-	display_set_frame_rate(30);
+  display_init();
+  display_set_frame_rate(30);
 
 //  EEPROM_init();
 //  wins = EEPROM_getWins();
@@ -80,22 +80,22 @@ inline void setup() {
 }
 
 inline void loop() {
-	if (display_next_frame()) {
-		keypad_poll();
-		switch (mode) {
-			case MODE_TITLE:
-				nextTitleFrame();			break;
-			case MODE_STATS:
-				nextStatsFrame();			break;
-			case MODE_PLAY:
-				nextPlayFrame();			break;
-			case MODE_CORRECT:
-				nextCorrectFrame();		break;
-			case MODE_DEAD:
-				nextDeadFrame();			break;
-		}
-		display_paint();
-	}
+  if (display_next_frame()) {
+    keypad_poll();
+    switch (mode) {
+      case MODE_TITLE:
+        nextTitleFrame();			break;
+      case MODE_STATS:
+        nextStatsFrame();			break;
+      case MODE_PLAY:
+        nextPlayFrame();			break;
+      case MODE_CORRECT:
+        nextCorrectFrame();		break;
+      case MODE_DEAD:
+        nextDeadFrame();			break;
+    }
+    display_paint();
+  }
 }
 
 void showTitle(uint8_t cur) {
@@ -196,14 +196,14 @@ void resetStats() {
 }
 
 void drawStats() {
-	char __xdata *ptr = buf;
+  char __xdata *ptr = buf;
 
   // sprintf_P(buf, PSTR(" %u Wins\n %u Losses"), wins, losses);
-	*ptr++ = ' ';
-	u8_to_str(wins, ptr); while (*ptr) ptr++;
-	str_to_str(" Wins\r\n ", ptr); while (*ptr) ptr++;
-	u8_to_str(losses, ptr); while (*ptr) ptr++;
-	str_to_str(" Losses", ptr); // while (*ptr) ptr++;
+  *ptr++ = ' ';
+  u8_to_str(wins, ptr); while (*ptr) ptr++;
+  str_to_str(" Wins\r\n ", ptr); while (*ptr) ptr++;
+  u8_to_str(losses, ptr); while (*ptr) ptr++;
+  str_to_str(" Losses", ptr); // while (*ptr) ptr++;
 
   display_set_cursor(0,10);
   display_print(buf);
@@ -310,7 +310,7 @@ void nextDeadFrame() {
 }
 
 void drawScore() {
-	uint8_t __xdata *ptr = buf;
+  uint8_t __xdata *ptr = buf;
 
   // sprintf_P(buf, PSTR("%uW-%uL"), wins, losses);
   u8_to_str(wins, ptr);  while (*ptr) ptr++;
@@ -355,7 +355,7 @@ void drawHangman() {
 }
 
 void drawWord() {
-	char __xdata *ptr = currentWord;
+  char __xdata *ptr = currentWord;
   uint8_t x = 2;
   const uint8_t y = 9;
 
@@ -418,11 +418,11 @@ void drawDead() {
 void scoreResponse(char letter) {
   bool allDone = true;
   bool letterOk = false;
-	char __xdata *ptr = currentWord;
+  char __xdata *ptr = currentWord;
   while (*ptr) {
     char wordLetter = *ptr;
     if (usedLetters[wordLetter-65] == 0)
-    	allDone = false;
+      allDone = false;
     if (wordLetter == letter)
       letterOk = true;
     ptr++;
@@ -475,12 +475,12 @@ void pickAWord() {
 }
 
 void main() {
-	oscillator_32mhz();
-	clock_init();
-	ENABLE_INTERRUPTS;
-	setup();
+  oscillator_32mhz();
+  clock_init();
+  ENABLE_INTERRUPTS;
+  setup();
 
-	while(1) {
-		loop();
-	}
+  while(1) {
+    loop();
+  }
 }

@@ -29,23 +29,23 @@ all: rom.bin
 print-%: ; @echo $* = $($*)
 
 $(BUILD_DIR)/%.rel: %.c
-	@mkdir -p $(dir $@)
-	$(COMPILE) -o $@ $<
+  @mkdir -p $(dir $@)
+  $(COMPILE) -o $@ $<
 
 $(BUILD_DIR)/lib/%.rel: $(ROOT_DIR)/lib/%.c
-	@mkdir -p $(dir $@)
-	$(COMPILE) -o $@ $<
+  @mkdir -p $(dir $@)
+  $(COMPILE) -o $@ $<
 
 $(BUILD_DIR)/lib.lib: $(LIB_OBJECTS)
-	$(BUILD_LIB) $@ $(LIB_OBJECTS)
+  $(BUILD_LIB) $@ $(LIB_OBJECTS)
 
 $(BUILD_DIR)/rom.ihx: $(OBJECTS) $(BUILD_DIR)/lib.lib
-	@mkdir -p $(dir $(BUILD_DIR))
-	$(LINK) --out-fmt-ihx -o $(BUILD_DIR)/rom.ihx $(OBJECTS) $(BUILD_DIR)/lib.lib
+  @mkdir -p $(dir $(BUILD_DIR))
+  $(LINK) --out-fmt-ihx -o $(BUILD_DIR)/rom.ihx $(OBJECTS) $(BUILD_DIR)/lib.lib
 
 rom.bin: $(BUILD_DIR)/rom.ihx
-	makebin $(BUILD_DIR)/rom.ihx > rom.bin
+  makebin $(BUILD_DIR)/rom.ihx > rom.bin
 
 clean:
-	rm -r -f $(BUILD_DIR)
+  rm -r -f $(BUILD_DIR)
 
