@@ -64,7 +64,7 @@ inline void loop() {
 
 	// Send the name of any just pressed/released buttons to the UART
 	for (uint8_t col=0; col<4; col++) {
-		for (uint8_t row=0; row<5; row++) {
+		for (uint8_t row=0; row<8; row++) {
 			uint8_t mask = util_bit_to_mask[row];
 			if (keypad_just_pressed(col, mask)) {
 				uart_print("key pressed: "); uart_println(keypad_get_button_name(col, mask));
@@ -100,7 +100,7 @@ inline void loop() {
 
 	// Display the name of any currently pressed buttons
 	for (uint8_t col=0; col<4; col++) {
-		for (uint8_t row=0; row<5; row++) {
+		for (uint8_t row=0; row<8; row++) {
 			uint8_t mask = util_bit_to_mask[row];
 			if (keypad_pressed(col, mask)) {
 				display_set_cursor(3,25);

@@ -8,8 +8,8 @@
 #include "util.h"
 #include "keypad.h"
 
-//#define PIN_KB_PWR_COL			P0,0
-//#define PIN_KB_PWR_ROW			P1,7
+#define PIN_KB_PWR_COL			P0,0
+#define PIN_KB_PWR_ROW			P1,7
 
 #define PIN_KB_COL_TOP			P1,5
 #define PIN_KB_COL_1				P2,0
@@ -40,23 +40,22 @@ uint8_t _keypad_scan_rows();
 void keypad_scan() {
 	uint8_t keys;
 
-	clearBits(P1DIR,BV5(4,3,2,1,0)); // Set keypad rows as inputs
-	//_clearBits(P1DIR,BV6(7,4,3,2,1,0)); // Set keypad rows as inputs
+	clearBits(P1DIR,BV6(7,4,3,2,1,0)); // Set keypad rows as inputs
 
 	_keyboard_scan_col(0,PIN_KB_COL_TOP);
 	_keyboard_scan_col(1,PIN_KB_COL_1);
 	_keyboard_scan_col(2,PIN_KB_COL_2);
 	_keyboard_scan_col(3,PIN_KB_COL_3);
 
-// Read the on/off button
-//	keys = 0;
-//	setPinOutput(PIN_KB_PWR_COL);
-//	clearPin(PIN_KB_PWR_COL);
-//	if (isPinLow(PIN_KB_PWR_ROW))
-//		keys |= BV(7);
-//	setPin(PIN_KB_PWR_COL);
-//	setPinInput(PIN_KB_PWR_COL);
-//	keypad_keymap_0 |= keys;
+// Read the PWR button
+	keys = 0;
+	setPinOutput(PIN_KB_PWR_COL);
+	clearPin(PIN_KB_PWR_COL);
+	if (isPinLow(PIN_KB_PWR_ROW))
+		keys |= BV(7);
+	setPin(PIN_KB_PWR_COL);
+	setPinInput(PIN_KB_PWR_COL);
+	keypad_keymap_0 |= keys;
 }
 
 // private methods --------------------------------------------------------

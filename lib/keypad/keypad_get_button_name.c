@@ -16,6 +16,9 @@ const char __code *_button_names[5][4] = {
 };
 
 const char __code *keypad_get_button_name(uint8_t col, uint8_t mask) {
-	uint8_t row = util_mask_to_bit(mask);
+	uint8_t row;
+	if (col == ARG1(BUTTON_PWR) && mask == ARG2(BUTTON_PWR))
+		return "PWR";
+	row = util_mask_to_bit(mask);
 	return _button_names[row][col];
 }

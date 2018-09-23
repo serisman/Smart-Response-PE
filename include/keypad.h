@@ -12,6 +12,7 @@
 
 #include "util.h"
 
+#define BUTTON_PWR					0,BV(7)
 #define BUTTON_ENTER				0,BV(0)
 #define BUTTON_QUESTION			0,BV(1)
 #define BUTTON_MENU					0,BV(2)

@@ -12,9 +12,6 @@
 #define HIGH                          1
 #define LOW                           0
 
-#define ARG1(a,...)										a
-#define ARG2(a,b,...)									b
-
 // ----------------------------------------------------------------------
 
 #define BV(bit)											  (uint8_t)(1<<(bit))
@@ -40,6 +37,9 @@
 
 // ----------------------------------------------------------------------
 
+#define ARG1_EX(a,...)								a
+#define ARG2_EX(a,b,...)							b
+
 #define PORT_EX(port,pin)             port
 #define PORT_DIR_EX(port,pin)         port ## DIR
 #define PORT_SEL_EX(port,pin)         port ## SEL
@@ -57,13 +57,16 @@
 
 // ----------------------------------------------------------------------
 
+#define ARG1(a)												ARG1_EX(a)
+#define ARG2(a)												ARG2_EX(a)
+
 #define PORT(pinspec)                	PORT_EX(pinspec)
 #define PORT_DIR(pinspec)            	PORT_DIR_EX(pinspec)
 #define PORT_SEL(pinspec)            	PORT_SEL_EX(pinspec)
 #define PIN(pinspec)                 	PIN_EX(pinspec)
 
-#define setPinOutput(pinspec)         setBit(PORT_DIR_EX(pinspec),ARG2(pinspec))
-#define setPinInput(pinspec)          clearBit(PORT_DIR_EX(pinspec),ARG2(pinspec))
+#define setPinOutput(pinspec)         setBit(PORT_DIR_EX(pinspec),ARG2_EX(pinspec))
+#define setPinInput(pinspec)          clearBit(PORT_DIR_EX(pinspec),ARG2_EX(pinspec))
 
 #define setPin(pinspec)	  		  	    PIN_EX(pinspec) = HIGH
 #define clearPin(pinspec)		     	    PIN_EX(pinspec) = LOW
