@@ -17,48 +17,48 @@
 char __xdata str_buf[10];
 
 inline void setup() {
-	setPinOutput(RED_LED);    clearPin(RED_LED);
-	setPinOutput(GREEN_LED);  clearPin(GREEN_LED);
-	setPinOutput(TX_LED);     clearPin(TX_LED);
-	setPinOutput(RX_LED);     clearPin(RX_LED);
+  setPinOutput(RED_LED);    clearPin(RED_LED);
+  setPinOutput(GREEN_LED);  clearPin(GREEN_LED);
+  setPinOutput(TX_LED);     clearPin(TX_LED);
+  setPinOutput(RX_LED);     clearPin(RX_LED);
 
-	uart_init();
-	uart_println("Hello World!");
+  uart_init();
+  uart_println("Hello World!");
 }
 
 inline void loop() {
-	uint32_t millis = clock_millis();
-	u32_to_str(millis, str_buf);
-	uart_print("millis: "); uart_println(str_buf);
+  uint32_t millis = clock_millis();
+  u32_to_str(millis, str_buf);
+  uart_print("millis: "); uart_println(str_buf);
 
-	setPin(RED_LED);
-	clearPin(GREEN_LED);
-	setPin(TX_LED);
-	clearPin(RX_LED);
-	clock_delay_ms(250);
+  setPin(RED_LED);
+  clearPin(GREEN_LED);
+  setPin(TX_LED);
+  clearPin(RX_LED);
+  clock_delay_ms(250);
 
-	clearPin(TX_LED);
-	setPin(RX_LED);
-	clock_delay_ms(250);
+  clearPin(TX_LED);
+  setPin(RX_LED);
+  clock_delay_ms(250);
 
-	clearPin(RED_LED);
-	setPin(GREEN_LED);
-	setPin(TX_LED);
-	clearPin(RX_LED);
-	clock_delay_ms(250);
+  clearPin(RED_LED);
+  setPin(GREEN_LED);
+  setPin(TX_LED);
+  clearPin(RX_LED);
+  clock_delay_ms(250);
 
-	clearPin(TX_LED);
-	setPin(RX_LED);
-	clock_delay_ms(250);
+  clearPin(TX_LED);
+  setPin(RX_LED);
+  clock_delay_ms(250);
 }
 
 void main() {
-	oscillator_32mhz();
-	clock_init();
-	ENABLE_INTERRUPTS;
-	setup();
+  oscillator_32mhz();
+  clock_init();
+  ENABLE_INTERRUPTS;
+  setup();
 
-	while(1) {
-		loop();
-	}
+  while(1) {
+    loop();
+  }
 }
