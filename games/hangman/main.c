@@ -83,16 +83,11 @@ inline void loop() {
   if (display_next_frame()) {
     keypad_poll();
     switch (mode) {
-      case MODE_TITLE:
-        nextTitleFrame();			break;
-      case MODE_STATS:
-        nextStatsFrame();			break;
-      case MODE_PLAY:
-        nextPlayFrame();			break;
-      case MODE_CORRECT:
-        nextCorrectFrame();		break;
-      case MODE_DEAD:
-        nextDeadFrame();			break;
+      case MODE_TITLE:    nextTitleFrame();   break;
+      case MODE_STATS:    nextStatsFrame();   break;
+      case MODE_PLAY:     nextPlayFrame();    break;
+      case MODE_CORRECT:  nextCorrectFrame(); break;
+      case MODE_DEAD:     nextDeadFrame();    break;
     }
     display_paint();
   }
