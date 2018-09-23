@@ -26,4 +26,4 @@ Notes:
 	scl/sda have 10k pull-up resistors
 	looks like D2 could be populated with a reset sw (w/ ~10k resistor on C18)?
 
-	25AA08 - 8kB Serial I2C EEPROM
+	24AA08 - 1kB (8 Kbit) Serial I2C EEPROM
