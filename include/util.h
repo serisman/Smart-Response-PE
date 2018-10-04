@@ -7,6 +7,7 @@
 #ifndef __util_h_included__
 #define __util_h_included__
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define HIGH                          1

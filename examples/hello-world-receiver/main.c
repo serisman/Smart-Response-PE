@@ -4,7 +4,7 @@
 // Creation Date: 2018-09-14
 // License: MIT
 
-#include "cc2430.h"
+#include "hal.h"
 #include "clock.h"
 #include "uart.h"
 #include "string_utils.h"

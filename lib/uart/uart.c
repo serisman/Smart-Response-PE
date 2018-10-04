@@ -18,7 +18,7 @@ void uart_init() {
 	UxUCR = BV2(UxUCR_FLUSH,UxUCR_STOP);	// 8n1, no flow control, high stop bit, and FLUSH any activity
 
 	// Default to 115200 baud
-	uart_set_baud(isBitClear(CLKCON,CLKCON_CLKSPD) ? 11 : 12, 216); // 11 for 32 MHz, 12 for 16 MHz
+	uart_set_baud(oscillator_is_32mhz() ? 11 : 12, 216); // 11 for 32 MHz, 12 for 16 MHz (TODO... add support for other clock speeds for CC253x series?)
 
 	setBit(UxCSR,UxCSR_MODE); 		        // Switch to UART mode
 }

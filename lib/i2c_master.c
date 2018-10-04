@@ -5,9 +5,7 @@
 // License: MIT
 // Source: Based off of pseudo-code from: http://en.wikipedia.org/wiki/I%C2%B2C
 
-#include <stdbool.h>
-
-#include "cc2430.h"
+#include "hal.h"
 #include "util.h"
 #include "delay.h"
 #include "i2c_master.h"

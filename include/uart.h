@@ -8,7 +8,7 @@
 #define __uart_h_included__
 
 #include <stdint.h>
-#include "cc2430.h"
+#include "hal.h"
 
 // TODO... support easier re-configuration?
 #define UART_NUM          1

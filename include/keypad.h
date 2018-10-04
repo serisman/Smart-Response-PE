@@ -7,9 +7,6 @@
 #ifndef __keypad_h_included__
 #define __keypad_h_included__
 
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "util.h"
 
 #define BUTTON_PWR					0,BV(7)

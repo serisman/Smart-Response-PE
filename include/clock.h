@@ -8,7 +8,7 @@
 #define __clock_h_included__
 
 #include <stdint.h>
-#include "cc2430.h"
+#include "hal.h"
 
 extern volatile uint32_t _clock_ticks;
 extern volatile uint32_t _clock_millis;

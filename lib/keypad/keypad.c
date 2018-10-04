@@ -4,7 +4,7 @@
 // Creation Date: 2018-09-21
 // License: MIT
 
-#include "cc2430.h"
+#include "hal.h"
 #include "util.h"
 #include "keypad.h"
 

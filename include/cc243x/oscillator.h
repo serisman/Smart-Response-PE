@@ -1,4 +1,4 @@
-// Name: oscillator.h
+// Name: cc243x/oscillator.h
 // Project: Smart-Response-PE/lib
 // Author: Stephen Erisman <github@serisman.com>
 // Creation Date: 2018-09-21
@@ -20,6 +20,14 @@ inline void oscillator_32mhz() {
 	setBit(SLEEP,SLEEP_OSC_PD);								  // Disable 16 MHz RC oscillator
 
 	clearBits(CLKCON,BV3(CLKCON_TICKSPD_2,CLKCON_TICKSPD_1,CLKCON_TICKSPD_0));  // Set timer ticks to 32 MHz
+}
+
+inline uint8_t oscillator_get_timer_tick_speed() {
+	return (CLKCON >> CLKCON_TICKSPD_0) & 0x7;
+}
+
+inline bool oscillator_is_32mhz() {
+	return isBitClear(CLKCON,CLKCON_CLKSPD);
 }
 
 #endif /* __oscillator_h_included__ */

@@ -1,13 +1,16 @@
-// Name: cc2430.h
+// Name: cc253x/cc253x.h
 // Project: Smart-Response-PE/include
 // Author: Stephen Erisman <github@serisman.com>
-// Creation Date: 2018-09-21
+// Creation Date: 2018-10-03
 // License: MIT
 
-#ifndef __cc2430_h_included__
-#define __cc2430_h_included__
+#ifndef __cc253x_h_included__
+#define __cc253x_h_included__
 
-#include "mcs51/cc2430.h"				// https://github.com/darconeous/sdcc/blob/master/device/include/mcs51/cc2430.h
+#define CC253x                  1
+
+// https://github.com/contiki-os/contiki/tree/master/cpu/cc253x
+#include "mcs51/cc2530.h"				// https://github.com/darconeous/sdcc/blob/master/device/include/mcs51/cc2530.h
 
 #define ENABLE_INTERRUPTS 			EA=1;
 #define DISABLE_INTERRUPTS 			EA=0;
@@ -17,26 +20,30 @@
 #define ATOMIC_BEGIN						DISABLE_INTERRUPTS
 #define ATOMIC_END							ENABLE_INTERRUPTS
 
-// SLEEP (0xBE)
-#define SLEEP_OSC32K_CALDIS			7
-#define SLEEP_XOSC_STB					6
-#define SLEEP_HFRC_STB					5
-#define SLEEP_RST_1							4
-#define SLEEP_RST_0							3
-#define SLEEP_OSC_PD						2
-#define SLEEP_MODE_1						1
-#define SLEEP_MODE_0						0
+// SLEEPCMD (0xBE)
+#define SLEEPCMD_OSC32K_CALDIS	7
+#define SLEEPCMD_MODE_1					1
+#define SLEEPCMD_MODE_0					0
+
+// SLEEPSTA (0x9D)
+#define SLEEPSTA_OSC32K_CALDIS	7
+#define SLEEPSTA_RST_1					4
+#define SLEEPSTA_RST_0					3
+#define SLEEPSTA_CLK32K					0
 
 // PCON (0x87)
 #define PCON_IDLE								0
 
-// CLKCON (0xC6)
-#define CLKCON_OSC32K						7
+// CLKCONCMD (0xC6)
+// CLKCONSTA (0x9E)
+#define CLKCON_OSC32K				    7
 #define CLKCON_OSC							6
 #define CLKCON_TICKSPD_2				5
 #define CLKCON_TICKSPD_1				4
 #define CLKCON_TICKSPD_0				3
-#define CLKCON_CLKSPD						0
+#define CLKCON_CLKSPD_2					2
+#define CLKCON_CLKSPD_1					1
+#define CLKCON_CLKSPD_0					0
 
 // PERCFG (0xF1)
 #define PERCFG_T1CFG						6
@@ -87,4 +94,4 @@
 
 #include "oscillator.h"
 
-#endif /* __cc2430_h_included__ */
+#endif /* __cc253x_h_included__ */

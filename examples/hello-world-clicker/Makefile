@@ -7,8 +7,17 @@
 # ---------------------------------------------------------------------
 
 DEVICE = CC2430
+#DEVICE = CC2533
 
 # ---------------------------------------------------------------------
+
+ifeq ($(DEVICE), CC2430)
+  XRAM_LOC = 0xE000
+  XRAM_SIZE = 0x1F00
+else ifeq ($(DEVICE), CC2533)
+  XRAM_LOC = 0x0000
+  XRAM_SIZE = 0x0F00
+endif
 
 ROOT_DIR = ../..
 BUILD_DIR = .build
@@ -19,9 +28,10 @@ LIB_OBJECTS = $(patsubst $(ROOT_DIR)/lib/%.c,$(BUILD_DIR)/lib/%.rel,$(LIB_SOURCE
 SOURCES = main.c
 OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.rel,$(SOURCES))
 
+# http://sdcc.sourceforge.net/doc/sdccman.pdf
 COMPILE = sdcc -mmcs51 -c --std-c11 --opt-code-speed -D$(DEVICE) -I. -I$(ROOT_DIR)/include
 BUILD_LIB = sdar -rc
-LINK = sdcc -mmcs51 --xram-loc 0xE000 --xram-size 0x1F00
+LINK = sdcc -mmcs51 --xram-loc $(XRAM_LOC) --xram-size $(XRAM_SIZE)
 
 # symbolic targets:
 all: rom.bin

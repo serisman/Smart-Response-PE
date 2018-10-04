@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#include "cc2430.h"
+#include "hal.h"
 #include "util.h"
 #include "string_utils.h"
 #include "clock.h"
