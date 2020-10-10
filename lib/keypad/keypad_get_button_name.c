@@ -7,7 +7,7 @@
 #include "util.h"
 #include "keypad.h"
 
-const char __code *_button_names[5][4] = {
+const char __code * __code _button_names[5][4] = {
 	{"Enter",	"T/Y",	"F/N",	"del"},
 	{"?",			"A/1",	"B/2",	"C/3"},
 	{"Menu",	"D/4",	"E/5",	"F/6"},
