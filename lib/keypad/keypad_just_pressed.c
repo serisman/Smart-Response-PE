@@ -7,12 +7,12 @@
 #include "keypad.h"
 
 bool keypad_just_pressed(uint8_t col, uint8_t mask) {
-	uint8_t keymap, previous_keymap;
+  uint8_t keymap, previous_keymap;
 
-	keymap = keypad_get_keymap(col);
-	if ((keymap & mask) == 0)		// Return false if button is not currently pressed.
-		return false;
+  keymap = keypad_get_keymap(col);
+  if ((keymap & mask) == 0)		// Return false if button is not currently pressed.
+    return false;
 
-	previous_keymap = keypad_get_previous_keymap(col);
-	return (previous_keymap & mask) == 0;	// Return true if button previously was not pressed.
+  previous_keymap = keypad_get_previous_keymap(col);
+  return (previous_keymap & mask) == 0;	// Return true if button previously was not pressed.
 }

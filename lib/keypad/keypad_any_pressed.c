@@ -7,5 +7,5 @@
 #include "keypad.h"
 
 bool keypad_any_pressed() {
-	return keypad_keymap_0 || keypad_keymap_1 || keypad_keymap_2 || keypad_keymap_3;
+  return keypad_keymap_0 || keypad_keymap_1 || keypad_keymap_2 || keypad_keymap_3;
 }

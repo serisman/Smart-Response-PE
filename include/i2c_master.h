@@ -8,7 +8,7 @@
 #define __i2c_master_h_included__
 
 #if !defined(I2C_FREQ_KHZ)
-	#define I2C_FREQ_KHZ			100
+  #define I2C_FREQ_KHZ			100
 #endif
 
 void i2c_master_start();

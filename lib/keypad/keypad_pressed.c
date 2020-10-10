@@ -7,6 +7,6 @@
 #include "keypad.h"
 
 bool keypad_pressed(uint8_t col, uint8_t mask) {
-	uint8_t keymap = keypad_get_keymap(col);
-	return (keymap & mask) == mask;
+  uint8_t keymap = keypad_get_keymap(col);
+  return (keymap & mask) == mask;
 }

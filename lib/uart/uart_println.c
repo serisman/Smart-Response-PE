@@ -7,6 +7,6 @@
 #include "uart.h"
 
 void uart_println(char *str) {
-	uart_print(str);
-	uart_print("\r\n");
+  uart_print(str);
+  uart_print("\r\n");
 }

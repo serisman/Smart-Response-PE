@@ -8,11 +8,11 @@
 #include "clock.h"
 
 uint32_t clock_millis() {
-	uint32_t millis;
+  uint32_t millis;
 
-	ATOMIC_BEGIN;
-		millis = _clock_millis;
-	ATOMIC_END;
+  ATOMIC_BEGIN;
+    millis = _clock_millis;
+  ATOMIC_END;
 
-	return millis;
+  return millis;
 }

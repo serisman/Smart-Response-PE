@@ -15,43 +15,43 @@
 #define UART_USE_ALT2     1
 
 #if UART_NUM == 0
-	#define PERCFG_UxCFG    PERCFG_U0CFG
-	#define UxUCR           U0UCR
-	#define UxCSR           U0CSR
-	#define UxGCR           U0GCR
-	#define UxBAUD          U0BAUD
-	#define UxDBUF          U0DBUF
+  #define PERCFG_UxCFG    PERCFG_U0CFG
+  #define UxUCR           U0UCR
+  #define UxCSR           U0CSR
+  #define UxGCR           U0GCR
+  #define UxBAUD          U0BAUD
+  #define UxDBUF          U0DBUF
 
-	#if UART_USE_ALT2 == 1
-		#define PxSEL           P1SEL
-		#define TX_PIN          P1,5
-		#define RX_PIN				  P1,4
-		#define UART_PIN_MASK   BV2(5,4)
-	#else
-		#define PxSEL           P0SEL
-		#define TX_PIN          P0,3
-		#define RX_PIN				  P0,2
-		#define UART_PIN_MASK   BV2(3,2)
-	#endif
+  #if UART_USE_ALT2 == 1
+    #define PxSEL           P1SEL
+    #define TX_PIN          P1,5
+    #define RX_PIN				  P1,4
+    #define UART_PIN_MASK   BV2(5,4)
+  #else
+    #define PxSEL           P0SEL
+    #define TX_PIN          P0,3
+    #define RX_PIN				  P0,2
+    #define UART_PIN_MASK   BV2(3,2)
+  #endif
 #else
-	#define PERCFG_UxCFG    PERCFG_U1CFG
-	#define UxUCR           U1UCR
-	#define UxCSR           U1CSR
-	#define UxGCR           U1GCR
-	#define UxBAUD          U1BAUD
-	#define UxDBUF          U1DBUF
+  #define PERCFG_UxCFG    PERCFG_U1CFG
+  #define UxUCR           U1UCR
+  #define UxCSR           U1CSR
+  #define UxGCR           U1GCR
+  #define UxBAUD          U1BAUD
+  #define UxDBUF          U1DBUF
 
-	#if UART_USE_ALT2 == 1
-		#define PxSEL           P1SEL
-		#define TX_PIN          P1,6
-		#define RX_PIN				  P1,7
-		#define UART_PIN_MASK   BV2(7,6)
-	#else
-		#define PxSEL           P0SEL
-		#define TX_PIN          P0,4
-		#define RX_PIN				  P0,5
-		#define UART_PIN_MASK   BV2(5,4)
-	#endif
+  #if UART_USE_ALT2 == 1
+    #define PxSEL           P1SEL
+    #define TX_PIN          P1,6
+    #define RX_PIN				  P1,7
+    #define UART_PIN_MASK   BV2(7,6)
+  #else
+    #define PxSEL           P0SEL
+    #define TX_PIN          P0,4
+    #define RX_PIN				  P0,5
+    #define UART_PIN_MASK   BV2(5,4)
+  #endif
 #endif
 
 // Baudrate = (((256 + BAUD_M) * POW(2,BAUD_E)) / POW(2,28)) * (Hz * 1000000)

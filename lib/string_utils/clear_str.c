@@ -7,7 +7,7 @@
 #include "string_utils.h"
 
 void clear_str(char __xdata *str_buf, uint8_t len) {
-	while (len--) {
-		*str_buf++ = 0;
-	}
+  while (len--) {
+    *str_buf++ = 0;
+  }
 }

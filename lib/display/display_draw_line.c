@@ -9,17 +9,17 @@
 // TODO... optimize this
 
 int abs(int j) {
-	return (j < 0) ? -j : j;
+  return (j < 0) ? -j : j;
 }
 
 #define SWAP(x,y) do {	\
-		tmp = x;	\
-		x = y;	\
-		y = tmp;	\
-	} while(0)
+    tmp = x;	\
+    x = y;	\
+    y = tmp;	\
+  } while(0)
 
 void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
-	int16_t tmp, dx, dy, err;
+  int16_t tmp, dx, dy, err;
   int8_t ystep;
 
   // bresenham's algorithm - thx wikpedia

@@ -7,10 +7,10 @@
 #include "string_utils.h"
 
 void u8_to_str(char __xdata *str_buf, uint8_t u) {
-	uint8_t pos = 0;
-	do {
-		str_buf[pos++] = '0' + (u % 10);
-		u /= 10;
-	} while (u != 0);
-	reverse_str(str_buf, pos);
+  uint8_t pos = 0;
+  do {
+    str_buf[pos++] = '0' + (u % 10);
+    u /= 10;
+  } while (u != 0);
+  reverse_str(str_buf, pos);
 }

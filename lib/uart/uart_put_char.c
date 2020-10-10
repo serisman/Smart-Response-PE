@@ -7,6 +7,6 @@
 #include "uart.h"
 
 void uart_put_char(char c) {
-	uart_wait_for_tx_idle();
-	UxDBUF = c;
+  uart_wait_for_tx_idle();
+  UxDBUF = c;
 }

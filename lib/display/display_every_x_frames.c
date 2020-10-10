@@ -7,5 +7,5 @@
 #include "display.h"
 
 bool display_every_x_frames(uint8_t frames) {
-	return display_frame_count % frames == 0;
+  return display_frame_count % frames == 0;
 }

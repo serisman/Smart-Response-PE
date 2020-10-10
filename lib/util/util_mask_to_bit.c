@@ -7,11 +7,11 @@
 #include "util.h"
 
 uint8_t util_mask_to_bit(uint8_t mask) {
-	uint8_t bit = 8;
-	while (bit--) {
-		if (isBitSet(mask,7))
-			return bit;
-		mask <<= 1;
-	}
-	return 0;		// TODO... what should we actually do if the mask is empty?
+  uint8_t bit = 8;
+  while (bit--) {
+    if (isBitSet(mask,7))
+      return bit;
+    mask <<= 1;
+  }
+  return 0;		// TODO... what should we actually do if the mask is empty?
 }

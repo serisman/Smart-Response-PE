@@ -7,8 +7,8 @@
 #include "string_utils.h"
 
 void str_to_str(char *str, char __xdata *str_buf) {
-	while (*str) {
-		*str_buf++ = *str++;
-	}
-	*str_buf = 0;
+  while (*str) {
+    *str_buf++ = *str++;
+  }
+  *str_buf = 0;
 }

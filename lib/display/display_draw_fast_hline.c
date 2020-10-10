@@ -9,8 +9,8 @@
 
 void display_draw_fast_hline(uint8_t x, uint8_t y, uint8_t width) {
   uint8_t xEnd; // last x point + 1
-	uint8_t pixel_mask, screen_pixel;
-	uint8_t __xdata *screen_ptr;
+  uint8_t pixel_mask, screen_pixel;
+  uint8_t __xdata *screen_ptr;
 
   // Do y bounds checks
   if (/*y < 0 ||*/ y >= SCREEN_HEIGHT)
@@ -33,16 +33,16 @@ void display_draw_fast_hline(uint8_t x, uint8_t y, uint8_t width) {
   // calculate actual width (even if unchanged)
   width = xEnd - x;
 
-	screen_ptr = display_get_screen_ptr(x, y);
-	pixel_mask = util_bit_to_mask[y & 7];
-	if (display_color != COLOR_BLACK)
-		pixel_mask = ~pixel_mask;
-	while (width--) {
-		screen_pixel = *screen_ptr;
-		if (display_color == COLOR_BLACK)
-			screen_pixel |= pixel_mask;
-		else
-			screen_pixel &= pixel_mask;
-		*screen_ptr++ = screen_pixel;
-	}
+  screen_ptr = display_get_screen_ptr(x, y);
+  pixel_mask = util_bit_to_mask[y & 7];
+  if (display_color != COLOR_BLACK)
+    pixel_mask = ~pixel_mask;
+  while (width--) {
+    screen_pixel = *screen_ptr;
+    if (display_color == COLOR_BLACK)
+      screen_pixel |= pixel_mask;
+    else
+      screen_pixel &= pixel_mask;
+    *screen_ptr++ = screen_pixel;
+  }
 }

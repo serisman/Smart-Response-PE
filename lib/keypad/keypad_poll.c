@@ -12,10 +12,10 @@ uint8_t __xdata keypad_previous_keymap_2;
 uint8_t __xdata keypad_previous_keymap_3;
 
 void keypad_poll() {
-	keypad_previous_keymap_0 = keypad_keymap_0;
-	keypad_previous_keymap_1 = keypad_keymap_1;
-	keypad_previous_keymap_2 = keypad_keymap_2;
-	keypad_previous_keymap_3 = keypad_keymap_3;
+  keypad_previous_keymap_0 = keypad_keymap_0;
+  keypad_previous_keymap_1 = keypad_keymap_1;
+  keypad_previous_keymap_2 = keypad_keymap_2;
+  keypad_previous_keymap_3 = keypad_keymap_3;
 
-	keypad_scan();
+  keypad_scan();
 }

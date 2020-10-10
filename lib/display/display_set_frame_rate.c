@@ -7,5 +7,5 @@
 #include "display.h"
 
 void display_set_frame_rate(uint8_t rate) {
-	display_each_frame_millis = 1000 / rate;
+  display_each_frame_millis = 1000 / rate;
 }

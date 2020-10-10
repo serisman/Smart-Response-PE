@@ -7,12 +7,12 @@
 #include "display.h"
 
 void display_fill_rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height) {
-	uint8_t yEnd = y + height;
+  uint8_t yEnd = y + height;
 
-	if (yEnd > SCREEN_HEIGHT)
-		yEnd = SCREEN_HEIGHT;
+  if (yEnd > SCREEN_HEIGHT)
+    yEnd = SCREEN_HEIGHT;
 
-	// TODO... optimize this...
+  // TODO... optimize this...
   for (int y2 = y; y2 < yEnd; y2++) {
     display_draw_fast_hline(x,y2,width);
   }
