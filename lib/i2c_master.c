@@ -17,7 +17,7 @@
 bool started = 0;
 
 void i2c_master_half_delay() {
-  delay_us_32mhz(1000.0 / (float)I2C_FREQ_KHZ / 2.0);
+  _delay_us(1000.0 / (float)I2C_FREQ_KHZ / 2.0);
 }
 
 void i2c_master_start() {

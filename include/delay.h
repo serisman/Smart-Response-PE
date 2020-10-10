@@ -7,73 +7,51 @@
 #ifndef __delay_h_included__
 #define __delay_h_included__
 
+#if !defined(F_CPU)
+  #error "F_CPU is not defined!"
+#endif
+
 #include <stdint.h>
 
-// For when the system clock is 16 MHz (only good for up to 255 usec)
-inline void delay_us_16mhz(uint8_t usec) {
-  while (usec--) {
-    __asm
-    xch a,r4
-    xch a,r4
-    __endasm;
-  }
-}
+void _delay_loop_8(uint8_t ctr);
+void _delay_loop_16(uint16_t ctr);
+void _delay_loop_32(uint32_t ctr);
 
-/*
-  mov	r7,usec			2,4
-loop:								16 cycles
-  mov	ar6,r7			2,3
-  dec	r7					1,2
-  mov	a,r6				1,1
-  jz	done				1,3
-  xch a,r4				1,2
-  xch a,r4				1,2
-  sjmp	loop			2,3
-done:
-  11 bytes total
-*/
+#if !defined(MAX)
+  #define MAX(a,b) ((a)>(b)?(a):(b))
+#endif
 
-// For when the system clock is 32 MHz (only good for up to 127 usec)
-inline void delay_us_32mhz(uint8_t usec) {
-  delay_us_16mhz(usec*2);
-}
+#define NS_TO_CYCLES_16(ns)     (((ns)*16000000UL)/1000000000UL)
+#define US_TO_CYCLES_16(us)     (NS_TO_CYCLES_16(us*1000ULL))
 
-// For when the system clock is 32 MHz (good for up to ~65 msec)
-inline void long_delay_us_32mhz(uint16_t usec) {
-  while (usec--) {
-    __asm
-    xch a,r4
-    xch a,r4
-    xch a,r4
-    xch a,r4
-    nop
-    nop
-    __endasm;
-  }
-}
+#define NS_TO_CYCLES(ns)        (((ns)*F_CPU)/1000000000UL)
+#define US_TO_CYCLES(us)        (NS_TO_CYCLES(us*1000ULL))
+#define MS_TO_CYCLES(ms)        (NS_TO_CYCLES(ms*1000000ULL))
 
-/*
-  mov	r6,LO_BYTE(usec)			2,4
-  mov	r7,HI_BYTE(usec)			2,4
-loop:													32 cycles
-  mov	ar4,r6								2,3
-  mov	ar5,r7								2,3
-  dec	r6										1,2
-  cjne	r6,#0xff,00148$			3,4
-  dec	r7										1,2
-00148$:
-  mov	a,r4									1,1
-  orl	a,r5									1,1
-  jz	done									1,3
-  xch a,r4									1,2
-  xch a,r4									1,2
-  xch a,r4									1,2
-  xch a,r4									1,2
-  nop												1,1
-  nop												1,1
-  sjmp	loop								2,3
-done:
-  24 bytes total
-*/
+#define LOOP_CTR(cycles,ovh,lp) (MAX(0,(cycles-ovh-lp)/lp)+1)
+#define LOOP_CTR_8(cycles)      LOOP_CTR(cycles,17,3)
+#define LOOP_CTR_16(cycles)     LOOP_CTR(cycles,21,15)
+#define LOOP_CTR_32(cycles)     LOOP_CTR(cycles,35,27)
+
+#define _delay_us_16mhz(us)     \
+  (LOOP_CTR_8(US_TO_CYCLES_16(us)) < 256ULL) ? \
+  _delay_loop_8((uint8_t)LOOP_CTR_8(US_TO_CYCLES_16(us))) : \
+  (LOOP_CTR_16(US_TO_CYCLES_16(us)) < 65536ULL) ? \
+  _delay_loop_16((uint16_t)LOOP_CTR_16(US_TO_CYCLES_16(us))) : \
+  _delay_loop_32((uint32_t)LOOP_CTR_32(US_TO_CYCLES_16(us)))
+
+#define _delay_us(us)           \
+  (LOOP_CTR_8(US_TO_CYCLES(us)) < 256ULL) ? \
+  _delay_loop_8((uint8_t)LOOP_CTR_8(US_TO_CYCLES(us))) : \
+  (LOOP_CTR_16(US_TO_CYCLES(us)) < 65536ULL) ? \
+  _delay_loop_16((uint16_t)LOOP_CTR_16(US_TO_CYCLES(us))) : \
+  _delay_loop_32((uint32_t)LOOP_CTR_32(US_TO_CYCLES(us)))
+
+#define _delay_ms(ms)           \
+  (LOOP_CTR_8(MS_TO_CYCLES(ms)) < 256ULL) ? \
+  _delay_loop_8((uint8_t)LOOP_CTR_8(MS_TO_CYCLES(ms))) : \
+  (LOOP_CTR_16(MS_TO_CYCLES(ms)) < 65536ULL) ? \
+  _delay_loop_16((uint16_t)LOOP_CTR_16(MS_TO_CYCLES(ms))) : \
+  _delay_loop_32((uint32_t)LOOP_CTR_32(MS_TO_CYCLES(ms)))
 
 #endif /* __delay_h_included__ */

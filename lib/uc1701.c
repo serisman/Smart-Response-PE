@@ -69,9 +69,9 @@ void uc1701_init() {
 
   // Reset the LCD
   clearPin(PIN_LCD_RST);
-  delay_us_32mhz(1);
+  _delay_ms(1);
   setPin(PIN_LCD_RST);
-  delay_us_32mhz(5);
+  _delay_ms(5);
 
   // Initialize the LCD
   _uc1701_set_cmd_mode();

@@ -13,7 +13,7 @@
 inline void oscillator_32mhz() {
   clearBit(SLEEP,SLEEP_OSC_PD); 							// Enable both 16 MHz RC and 32 MHz crystal oscillators
   while (isBitClear(SLEEP,SLEEP_XOSC_STB));	  // Wait for XOSC to power up and be stable
-  delay_us_16mhz(64);
+  _delay_us_16mhz(64);
 
   clearBit(CLKCON,CLKCON_OSC);								// Select 32 MHz crystal oscillator
   while (isBitSet(CLKCON,CLKCON_OSC));				// Wait for system clock to switch to 32 MHz crystal oscillator
