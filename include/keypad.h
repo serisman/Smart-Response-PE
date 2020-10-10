@@ -43,6 +43,7 @@ extern uint8_t __xdata keypad_previous_keymap_3;
 
 void keypad_scan();
 uint8_t keypad_get_keymap(uint8_t col);
+bool keypad_any_pressed();
 bool keypad_pressed(uint8_t col, uint8_t mask);
 const char __code *keypad_get_button_name(uint8_t col, uint8_t mask);
 

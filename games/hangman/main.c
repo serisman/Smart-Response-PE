@@ -20,6 +20,8 @@
 
 #include "words.h"
 
+#define FPS                 30u
+
 #define UP_BUTTON     BUTTON_UP
 #define DOWN_BUTTON   BUTTON_DOWN
 #define LEFT_BUTTON   BUTTON_T_Y
@@ -51,6 +53,7 @@ uint8_t __xdata usedLetters[26];
 
 char __xdata buf[30];
 
+void nextFrame();
 void showTitle(uint8_t cur);
 void moveCursor(uint8_t num);
 void nextTitleFrame();
@@ -59,6 +62,8 @@ void drawTitleMenu();
 void drawMenuCursor(uint8_t num);
 void showStats();
 void nextStatsFrame();
+void loadStats();
+void saveStats();
 void resetStats();
 void drawStats();
 void drawStatsMenu();
@@ -75,33 +80,31 @@ void drawDead();
 void scoreResponse(char letter);
 void pickAWord();
 
-inline void setup() {
+void setup() {
   display_init();
-  display_set_frame_rate(30);
+  display_set_frame_rate(FPS);
 
-  if (eeprom_read_byte(EEPROM_BASE_ADDR) == 'H' && eeprom_read_byte(EEPROM_BASE_ADDR + 1) == 'M') {
-    wins = eeprom_read_byte(EEPROM_WINS_ADDR);
-    losses = eeprom_read_byte(EEPROM_LOSSES_ADDR);
+  loadStats();
+}
+
+void loop() {
+  if (display_next_frame()) {
+    nextFrame();
   } else {
-    eeprom_write_byte(EEPROM_BASE_ADDR, 'H');
-    eeprom_write_byte(EEPROM_BASE_ADDR + 1, 'M');
-    eeprom_write_byte(EEPROM_WINS_ADDR, wins);
-    eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+    //idle();
   }
 }
 
-inline void loop() {
-  if (display_next_frame()) {
-    keypad_poll();
-    switch (mode) {
-      case MODE_TITLE:    nextTitleFrame();   break;
-      case MODE_STATS:    nextStatsFrame();   break;
-      case MODE_PLAY:     nextPlayFrame();    break;
-      case MODE_CORRECT:  nextCorrectFrame(); break;
-      case MODE_DEAD:     nextDeadFrame();    break;
-    }
-    display_paint();
+void nextFrame() {
+  keypad_poll();
+  switch (mode) {
+    case MODE_TITLE:    nextTitleFrame();   break;
+    case MODE_STATS:    nextStatsFrame();   break;
+    case MODE_PLAY:     nextPlayFrame();    break;
+    case MODE_CORRECT:  nextCorrectFrame(); break;
+    case MODE_DEAD:     nextDeadFrame();    break;
   }
+  display_paint();
 }
 
 void showTitle(uint8_t cur) {
@@ -128,7 +131,7 @@ void nextTitleFrame() {
     return;
   }
 
-  if (!paused && display_every_x_frames(10)) {
+  if (!paused && display_every_x_frames(FPS/3u)) {
     if (hangman < 6) hangman++;
     else hangman = 0;
   }
@@ -141,7 +144,7 @@ void nextTitleFrame() {
 void drawLogo() {
   display_set_cursor(0,0);
   display_print("HANGMAN!");
-  display_draw_fast_hline(0,9,45, COLOR_BLACK);
+  display_draw_fast_hline(0,9,45);
   display_set_cursor(0,12);
   display_print(" by serisman");
 }
@@ -185,7 +188,7 @@ void nextStatsFrame() {
     return;
   }
 
-  if (!paused && display_every_x_frames(10)) {
+  if (!paused && display_every_x_frames(FPS/3u)) {
     if (hangman < 6) hangman++;
     else hangman = 0;
   }
@@ -195,11 +198,27 @@ void nextStatsFrame() {
   drawHangman();
 }
 
+void loadStats() {
+  if (eeprom_read_byte(EEPROM_BASE_ADDR) == 'H' && eeprom_read_byte(EEPROM_BASE_ADDR + 1) == 'M') {
+    wins = eeprom_read_byte(EEPROM_WINS_ADDR);
+    losses = eeprom_read_byte(EEPROM_LOSSES_ADDR);
+  } else {
+    eeprom_write_byte(EEPROM_BASE_ADDR, 'H');
+    eeprom_write_byte(EEPROM_BASE_ADDR + 1, 'M');
+    eeprom_write_byte(EEPROM_WINS_ADDR, wins);
+    eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+  }
+}
+
+void saveStats() {
+  eeprom_write_byte(EEPROM_WINS_ADDR, wins);
+  eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+}
+
 void resetStats() {
   wins = 0;
   losses = 0;
-  eeprom_write_byte(EEPROM_WINS_ADDR, wins);
-  eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+  saveStats();
 }
 
 void drawStats() {
@@ -207,9 +226,9 @@ void drawStats() {
 
   // sprintf_P(buf, PSTR(" %u Wins\n %u Losses"), wins, losses);
   *ptr++ = ' ';
-  u8_to_str(wins, ptr); while (*ptr) ptr++;
+  u8_to_str(ptr, wins); while (*ptr) ptr++;
   str_to_str(" Wins\r\n ", ptr); while (*ptr) ptr++;
-  u8_to_str(losses, ptr); while (*ptr) ptr++;
+  u8_to_str(ptr, losses); while (*ptr) ptr++;
   str_to_str(" Losses", ptr); // while (*ptr) ptr++;
 
   display_set_cursor(0,10);
@@ -230,7 +249,6 @@ void startPlaying() {
   if (!paused) {
     pickAWord();
     hangman = 0;
-
     clear_str(usedLetters, sizeof(usedLetters));
   }
   paused = false;
@@ -274,7 +292,7 @@ void nextPlayFrame() {
     return;
   }
 
-  if (display_every_x_frames(10)) {
+  if (display_every_x_frames(FPS/3u)) {
     cursorBlink = 1-cursorBlink;
   }
 
@@ -320,10 +338,10 @@ void drawScore() {
   uint8_t __xdata *ptr = buf;
 
   // sprintf_P(buf, PSTR("%uW-%uL"), wins, losses);
-  u8_to_str(wins, ptr);  while (*ptr) ptr++;
+  u8_to_str(ptr, wins);  while (*ptr) ptr++;
   *ptr++ = 'W';
   *ptr++ = '-';
-  u8_to_str(losses, ptr);  while (*ptr) ptr++;
+  u8_to_str(ptr, losses);  while (*ptr) ptr++;
   *ptr++ = 'L';
   *ptr = 0;
 
@@ -337,23 +355,23 @@ void drawHangman() {
   // width: 50
   // height: 48
 
-  display_fill_rect(LEFT+5, 45, 40, 3, COLOR_BLACK); // ground
-  display_fill_rect(LEFT+30, 0, 3, 48, COLOR_BLACK); // post
-  display_fill_rect(LEFT+10, 0, 20, 3, COLOR_BLACK); // bar
-  display_fill_rect(LEFT+10, 0, 3, 8, COLOR_BLACK); // noose
+  display_fill_rect(LEFT+5, 45, 40, 3); // ground
+  display_fill_rect(LEFT+30, 0, 3, 48); // post
+  display_fill_rect(LEFT+10, 0, 20, 3); // bar
+  display_fill_rect(LEFT+10, 0, 3, 8); // noose
 
-  if (hangman > 0)	// head
-    display_draw_circle(LEFT+11, 11, 4, COLOR_BLACK);
-  if (hangman > 1)	// body
-    display_draw_fast_vline(LEFT+11, 15, 15, COLOR_BLACK);
-  if (hangman > 2)	// left arm
-    display_draw_line(LEFT+0, 16, LEFT+11, 19, COLOR_BLACK);
-  if (hangman > 3)	// right arm
-    display_draw_line(LEFT+22, 16, LEFT+11, 19, COLOR_BLACK);
-  if (hangman > 4)	// left leg
-    display_draw_line(LEFT+0, 39, LEFT+11, 30, COLOR_BLACK);
-  if (hangman > 5)	// right leg
-    display_draw_line(LEFT+22, 39, LEFT+11, 30, COLOR_BLACK);
+  if (hangman > 0)  // head
+    display_draw_circle(LEFT+11, 11, 4);
+  if (hangman > 1)  // body
+    display_draw_fast_vline(LEFT+11, 15, 15);
+  if (hangman > 2)  // left arm
+    display_draw_line(LEFT+0, 16, LEFT+11, 19);
+  if (hangman > 3)  // right arm
+    display_draw_line(LEFT+22, 16, LEFT+11, 19);
+  if (hangman > 4)  // left leg
+    display_draw_line(LEFT+0, 39, LEFT+11, 30);
+  if (hangman > 5)  // right leg
+    display_draw_line(LEFT+22, 39, LEFT+11, 30);
 
   if (paused) {
     display_set_cursor(LEFT+7,48/2-4);
@@ -362,16 +380,16 @@ void drawHangman() {
 }
 
 void drawWord() {
-  char __xdata *ptr = currentWord;
-  uint8_t x = 2;
-  const uint8_t y = 9;
 
 #ifdef DEBUG
   display_set_cursor(0,0);
   display_print(currentWord); // for easier testing...
 #endif
 
-  while (*ptr) {
+  uint8_t x = 2;
+  const uint8_t y = 9;
+  char __xdata *ptr = currentWord;
+  do {
     uint8_t letter = *ptr;
     if (usedLetters[letter-65] == 1) {
       display_set_cursor(x, y);
@@ -381,11 +399,11 @@ void drawWord() {
         display_set_cursor(x, y);
         display_draw_char(letter+32); // be nice and show the correct answer
       }
-      display_draw_fast_hline(x-1, y+7, 7, COLOR_BLACK); //y+9
+      display_draw_fast_hline(x-1, y+7, 7); //y+9
     }
     x += 9;
     ptr++;
-  }
+  } while (*ptr);
 }
 
 void drawKeyboard() {
@@ -399,15 +417,15 @@ void drawKeyboard() {
       x += 9;
     }
 
+    if (cursor == chr && cursorBlink) {
+      display_draw_fast_hline(x-1, y+7, 7); // y+8
+    }
+
     display_set_cursor(x, y);
     if (usedLetters[chr] == 0) {
       display_draw_char(chr+65);
     } else {
       display_draw_char(chr+97); // use lower case for already used letters
-    }
-
-    if (cursor == chr && cursorBlink) {
-      display_draw_fast_hline(x-1, y+7, 7, COLOR_BLACK); // y+8
     }
   }
 }
@@ -426,20 +444,20 @@ void scoreResponse(char letter) {
   bool allDone = true;
   bool letterOk = false;
   char __xdata *ptr = currentWord;
-  while (*ptr) {
+  do {
     char wordLetter = *ptr;
     if (usedLetters[wordLetter-65] == 0)
       allDone = false;
     if (wordLetter == letter)
       letterOk = true;
     ptr++;
-  }
+  } while (*ptr);
 
   if (allDone) {
     // sound.tones(soundWin);
     mode = MODE_CORRECT;
     wins++;
-    eeprom_write_byte(EEPROM_WINS_ADDR, wins);
+    saveStats();
   //} else if (letterOk) {
     // sound.tones(soundCorrect);
   } else if (!letterOk) {
@@ -448,7 +466,7 @@ void scoreResponse(char letter) {
       // sound.tones(soundDead);
       mode = MODE_DEAD;
       losses++;
-      eeprom_write_byte(EEPROM_LOSSES_ADDR, losses);
+      saveStats();
     //} else {
       // sound.tones(soundIncorrect);
     }
@@ -487,7 +505,7 @@ void main() {
   ENABLE_INTERRUPTS;
   setup();
 
-  while(1) {
+  while (1) {
     loop();
   }
 }

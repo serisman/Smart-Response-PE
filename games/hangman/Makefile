@@ -11,6 +11,8 @@ DEVICE = CC2430
 
 # ---------------------------------------------------------------------
 
+OUTPUT_NAME = Hangman
+
 ifeq ($(DEVICE), CC2430)
   XRAM_LOC = 0xE000
   XRAM_SIZE = 0x1F00
@@ -21,6 +23,9 @@ endif
 
 ROOT_DIR = ../..
 BUILD_DIR = .build
+OUTPUT_DIR = .output
+
+OUTPUT = $(OUTPUT_DIR)/$(OUTPUT_NAME)
 
 LIB_SOURCES = $(wildcard $(ROOT_DIR)/lib/*.c) $(wildcard $(ROOT_DIR)/lib/**/*.c)
 LIB_OBJECTS = $(patsubst $(ROOT_DIR)/lib/%.c,$(BUILD_DIR)/lib/%.rel,$(LIB_SOURCES))
@@ -29,12 +34,12 @@ SOURCES = main.c
 OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.rel,$(SOURCES))
 
 # http://sdcc.sourceforge.net/doc/sdccman.pdf
-COMPILE = sdcc -mmcs51 -c --std-c11 --opt-code-speed -D$(DEVICE) -I. -I$(ROOT_DIR)/include
+COMPILE = sdcc -mmcs51 -c --std-sdcc11 --opt-code-size -D$(DEVICE) -I. -I$(ROOT_DIR)/include
 BUILD_LIB = sdar -rc
 LINK = sdcc -mmcs51 --xram-loc $(XRAM_LOC) --xram-size $(XRAM_SIZE)
 
 # symbolic targets:
-all: rom.bin
+all: $(OUTPUT).bin
 
 print-%: ; @echo $* = $($*)
 
@@ -49,13 +54,19 @@ $(BUILD_DIR)/lib/%.rel: $(ROOT_DIR)/lib/%.c
 $(BUILD_DIR)/lib.lib: $(LIB_OBJECTS)
 	$(BUILD_LIB) $@ $(LIB_OBJECTS)
 
-$(BUILD_DIR)/rom.ihx: $(OBJECTS) $(BUILD_DIR)/lib.lib
-	@mkdir -p $(dir $(BUILD_DIR))
-	$(LINK) --out-fmt-ihx -o $(BUILD_DIR)/rom.ihx $(OBJECTS) $(BUILD_DIR)/lib.lib
+$(OUTPUT).ihx: $(OBJECTS) $(BUILD_DIR)/lib.lib
+	@mkdir -p $(dir $@)
+	$(LINK) --out-fmt-ihx -o $(OUTPUT).ihx $(OBJECTS) $(BUILD_DIR)/lib.lib
 
-rom.bin: $(BUILD_DIR)/rom.ihx
-	makebin $(BUILD_DIR)/rom.ihx > rom.bin
+$(OUTPUT).hex: $(OUTPUT).ihx
+	packihx $(OUTPUT).ihx > $(OUTPUT).hex
+	@echo '---------- Memory ----------'
+	@egrep 'available|EXTERNAL|FLASH' $(OUTPUT).mem
+
+$(OUTPUT).bin: $(OUTPUT).ihx
+	makebin $(OUTPUT).ihx > $(OUTPUT).bin
+	@echo '---------- Memory ----------'
+	@egrep 'available|EXTERNAL|FLASH' $(OUTPUT).mem
 
 clean:
-	rm -r -f $(BUILD_DIR)
-
+	rm -r -f $(BUILD_DIR) $(OUTPUT_DIR)

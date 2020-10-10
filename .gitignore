@@ -1,8 +1,9 @@
 .idea
+.build
+.output
 *.asm
 *.lst
 *.rel
 *.rst
 *.sym
 *.lib
-rom.*

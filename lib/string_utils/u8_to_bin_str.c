@@ -6,7 +6,7 @@
 
 #include "string_utils.h"
 
-void u8_to_bin_str(uint8_t u, uint8_t digits, char __xdata *str_buf) {
+void u8_to_bin_str(char __xdata *str_buf, uint8_t u, uint8_t digits) {
 	uint8_t pos = 0;
 	while (digits--) {
 		str_buf[pos++] = (u & (1 << digits)) ? '1' : '0';

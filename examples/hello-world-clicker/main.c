@@ -14,7 +14,9 @@
 
 #include "bitmaps.h"
 
-char __xdata str_buf[10];
+#define FPS                 30u
+
+char __xdata str_buf[12];
 
 uint32_t __xdata prev_millis = 0;
 
@@ -24,15 +26,15 @@ int8_t __xdata scroll_x_dir = 1;
 int8_t __xdata scroll_y = 0;
 int8_t __xdata scroll_y_dir = 1;
 
-inline void setup() {
+void setup() {
   uart_init();
   uart_println("Hello World!");
 
   display_init();
-  display_set_frame_rate(30);
+  display_set_frame_rate(FPS);
 }
 
-inline void loop() {
+void loop() {
   uint32_t millis;
 
   // Wait until its time to render our next frame
@@ -41,7 +43,7 @@ inline void loop() {
 
   // Send current millis() value to the UART
   millis = clock_millis();
-  u32_to_str(millis, str_buf);
+  u32_to_str(str_buf, millis);
   if (millis-prev_millis >= 1000) {
     uart_print("millis: "); uart_println(str_buf);
     prev_millis += 1000;
@@ -56,7 +58,7 @@ inline void loop() {
   if (keypad_changed()) {
     uart_print("keymap: ");
     for (uint8_t i=0; i<4; i++) {
-      u8_to_bin_str(keypad_get_keymap(i), 5, str_buf);
+      u8_to_bin_str(str_buf, keypad_get_keymap(i), 5);
       uart_print(str_buf); uart_print(" ");
     }
     uart_println("");
@@ -75,15 +77,15 @@ inline void loop() {
     }
   }
 
-  // Scroll the smar logo bitmap horizontally
-  display_draw_bitmap(scroll_x, 0, bmp_smart_logo, 60, 16, COLOR_BLACK);
+  // Scroll the Smart logo bitmap horizontally
+  display_draw_bitmap(bmp_smart_logo, scroll_x, 0, 60, 16);
   scroll_x += scroll_x_dir;
   if (scroll_x + (uint8_t)60 > SCREEN_WIDTH-35 || scroll_x + (uint8_t)(60/2) < 0) {
     scroll_x_dir = (uint8_t)0- scroll_x_dir;
   }
 
   // Scroll the wolf bitmap vertically
-  display_draw_bitmap(SCREEN_WIDTH-35, scroll_y, bmp_wolf, 35, 48, COLOR_BLACK);
+  display_draw_bitmap(bmp_wolf, SCREEN_WIDTH-35, scroll_y, 35, 48);
   scroll_y += scroll_y_dir;
   if (scroll_y + (uint8_t)(48/2) > SCREEN_HEIGHT || scroll_y + (uint8_t)(48/2) < 0) {
     scroll_y_dir = (uint8_t)0- scroll_y_dir;
@@ -93,28 +95,30 @@ inline void loop() {
   display_set_cursor(3,17);
   display_print("Hello World!");
 
-  // Display the current millis() value
-  display_set_cursor(3,25);
-  u32_to_str(millis, str_buf);
-  display_print(str_buf); display_print(" ms.");
-
-  // Display the name of any currently pressed buttons
-  for (uint8_t col=0; col<4; col++) {
-    for (uint8_t row=0; row<8; row++) {
-      uint8_t mask = util_bit_to_mask[row];
-      if (keypad_pressed(col, mask)) {
-        display_set_cursor(3,25);
-        display_print(keypad_get_button_name(col, mask));
-        display_print(" pressed!");
+  if (!keypad_any_pressed()) {
+    // Display the current millis() value
+    display_set_cursor(3,25);
+    u32_to_str(str_buf, millis);
+    display_print(str_buf); display_print(" ms.");
+  } else {
+    // Display the name of any currently pressed buttons
+    for (uint8_t col=0; col<4; col++) {
+      for (uint8_t row=0; row<8; row++) {
+        uint8_t mask = util_bit_to_mask[row];
+        if (keypad_pressed(col, mask)) {
+          display_set_cursor(3,25);
+          display_print(keypad_get_button_name(col, mask));
+          display_print(" pressed!");
+        }
       }
     }
-  }
 
-  // Display the keypad keymaps
-  display_set_cursor(12,33);
-  for (uint8_t i=0; i<4; i++) {
-    u8_to_bin_str(keypad_get_keymap(i), 5, str_buf);
-    display_print(str_buf); display_print((i == 1) ? "\r\n\t" : " ");
+    // Display the keypad keymaps
+    display_set_cursor(12,33);
+    for (uint8_t i=0; i<4; i++) {
+      u8_to_bin_str(str_buf, keypad_get_keymap(i), 5);
+      display_print(str_buf); display_print((i==1) ? "\r\n\t" : " ");
+    }
   }
 
   // Invert the screen if the Enter button was just pressed
@@ -136,7 +140,7 @@ void main() {
   ENABLE_INTERRUPTS;
   setup();
 
-  while(1) {
+  while (1) {
     loop();
   }
 }

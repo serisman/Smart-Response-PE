@@ -4,6 +4,7 @@
 // Creation Date: 2018-09-21
 // License: MIT
 // Source: Based off of pseudo-code from: http://en.wikipedia.org/wiki/I%C2%B2C
+// https://www.i2c-bus.org/
 
 #include "hal.h"
 #include "util.h"

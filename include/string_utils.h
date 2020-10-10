@@ -13,9 +13,9 @@ void reverse_str(char __xdata *str_buf, uint8_t len);
 void clear_str(char __xdata *str_buf, uint8_t len);
 void str_to_str(char *str, char __xdata *str_buf);
 
-void u8_to_str(uint8_t u, char __xdata * str_buf);
-void u8_to_bin_str(uint8_t u, uint8_t digits, char __xdata * str_buf);
+void u8_to_str(char __xdata * str_buf, uint8_t u);
+void u8_to_bin_str(char __xdata * str_buf, uint8_t u, uint8_t digits);
 
-void u32_to_str(uint32_t ul, char __xdata * str_buf);
+void u32_to_str(char __xdata * str_buf, uint32_t ul);
 
 #endif /* __string_utils_h_included__ */

@@ -20,6 +20,7 @@
 #define CHAR_HEIGHT					8
 
 extern uint8_t __xdata screen[NUM_SCREEN_ROWS * SCREEN_WIDTH];
+extern uint8_t display_color;
 
 extern uint8_t display_each_frame_millis;
 extern uint32_t display_prev_frame_ms;
@@ -33,13 +34,15 @@ inline void display_invert(bool invert);
 inline void display_paint();
 uint8_t __xdata *display_get_screen_ptr(uint8_t x, uint8_t y);
 
-void display_draw_pixel(uint8_t x, uint8_t y, uint8_t color);
-void display_draw_bitmap(int8_t x, int8_t y, uint8_t *bitmap, uint8_t width, uint8_t height, uint8_t color);
-void display_draw_circle(uint8_t x0, uint8_t y0, uint8_t r, uint8_t color);
-void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color);
-void display_draw_fast_vline(uint8_t x, uint8_t y, uint8_t height, uint8_t color);
-void display_draw_fast_hline(uint8_t x, uint8_t y, uint8_t width, uint8_t color);
-void display_fill_rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, uint8_t color);
+void display_set_color(uint8_t color);
+void display_draw_pixel(uint8_t x, uint8_t y);
+void display_draw_bitmap(const uint8_t __code *bitmap, int8_t x, int8_t y, uint8_t width, uint8_t height);
+void display_draw_circle(uint8_t x0, uint8_t y0, uint8_t r);
+void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void display_draw_fast_vline(uint8_t x, uint8_t y, uint8_t height);
+void display_draw_fast_hline(uint8_t x, uint8_t y, uint8_t width);
+void display_draw_rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height);
+void display_fill_rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height);
 
 void display_set_frame_rate(uint8_t rate);
 bool display_every_x_frames(uint8_t frames);

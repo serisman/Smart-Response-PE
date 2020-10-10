@@ -28,7 +28,7 @@ inline void setup() {
 
 inline void loop() {
   uint32_t millis = clock_millis();
-  u32_to_str(millis, str_buf);
+  u32_to_str(str_buf, millis);
   uart_print("millis: "); uart_println(str_buf);
 
   setPin(RED_LED);

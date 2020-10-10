@@ -18,7 +18,7 @@ int abs(int j) {
 		y = tmp;	\
 	} while(0)
 
-void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t color) {
+void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
 	int16_t tmp, dx, dy, err;
   int8_t ystep;
 
@@ -46,9 +46,9 @@ void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t c
 
   for (; x0 <= x1; x0++) {
     if (steep)
-      display_draw_pixel(y0, x0, color);
+      display_draw_pixel(y0, x0);
     else
-      display_draw_pixel(x0, y0, color);
+      display_draw_pixel(x0, y0);
 
     err -= dy;
     if (err < 0) {
