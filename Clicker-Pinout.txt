@@ -1,29 +1,30 @@
-
-P1_7 - on/off key row																Rx USART1 Alt. 2
-P1_6 - Keyboard column 3 (del,C,F,I,x/y)     				Tx USART1 Alt. 2
-P1_5 - Keyboard column top (up,dn,Enter,?,menu)     Tx USART0 Alt 2
-P1_4 - Keyboard row 5 (+,J,x/y,dn)                  Rx USART0 Alt 2
-P1_3 - Keyboard row 4 (G,H,I,up)
-P1_2 - Keyboard row 3 (D,E,F,menu)
-P1_1 - Keyboard row 2 (A,B,C,?)
-P1_0 - Keyboard row 1 (true,false,del,Enter)
-
 P0_0 - A0, AD, on/off key column
 P0_1 - A1, Keyboard column 2 (false,B,E,H,J)
-P0_2 - A2, LCD(7)/RST
-P0_3 - A3, LCD(6)/DC
-P0_4 - A4, LCD(5)/SCK
-P0_5 - A5, LCD(4)/MOSI
+P0_2 - A2, LCD(7)/RST                               MISO USART0 SPI   SS USART1 SPI
+P0_3 - A3, LCD(6)/DC                                MOSI USART0 SPI   SCK USART1 SPI
+P0_4 - A4, LCD(5)/SCK                               SS USART0 SPI     MOSI USART1 SPI
+P0_5 - A5, LCD(4)/MOSI                              SCK USART0 SPI    MISO USART1 SPI
 P0_6 - A6, SCL, Serial EEPROM(6)
 P0_7 - A7, SDA, Serial EEPROM(5)
 
+P1_0 - Keyboard row 1 (true,false,del,Enter)
+P1_1 - Keyboard row 2 (A,B,C,?)
+P1_2 - Keyboard row 3 (D,E,F,menu)
+P1_3 - Keyboard row 4 (G,H,I,up)
+P1_4 - Keyboard row 5 (+,J,x/y,dn)                  Rx USART0 Alt 2
+P1_5 - Keyboard column top (up,dn,Enter,?,menu)     Tx USART0 Alt 2
+P1_6 - Keyboard column 3 (del,C,F,I,x/y)            Tx USART1 Alt. 2
+P1_7 - on/off key row                               Rx USART1 Alt. 2
+
 P2_0 - Keyboard column 1 (true,A,D,G,+)
-P2_1 - DD
-P2_2 - DC
+P2_1 - DD (debug data)
+P2_2 - DC (debug clock)
+P2_3 - 32k XOSC
+P2_4 - 32k XOSC
 
 Notes:
-	all keyboard rows have 47k pull-up resistors
-	scl/sda have 10k pull-up resistors
-	looks like D2 could be populated with a reset sw (w/ ~10k resistor on C18)?
+	All keyboard rows have 47k pull-up resistors
+	SDA/SCL have 10k pull-up resistors
+	Looks like D2 could be populated with a reset sw (w/ ~10k resistor on C18)?
 
-	24AA08 - 1kB (8 Kbit) Serial I2C EEPROM
+	24AA08 - 8 kbit (1kB) Serial I2C EEPROM
