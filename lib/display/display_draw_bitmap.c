@@ -18,19 +18,19 @@ void display_draw_bitmap(const uint8_t __code *bitmap, int8_t x, int8_t y, uint8
 
   row = y / 8;
   if (y < 0) {
-    yOffset = 8 - ((0-y) % 8);
+    yOffset = 8 - ((uint8_t)(0-y) % 8u);
     row--;
   } else {
-    yOffset = y % 8;
+    yOffset = y % 8u;
   }
-  end_row = row + (height/8);
-  if (height % 8 != 0) end_row++;
+  end_row = row + (height/8u);
+  if (height % 8u != 0) end_row++;
   if (end_row > NUM_SCREEN_ROWS)
     end_row = NUM_SCREEN_ROWS;
   for (; row < end_row; row++) {
-    screen_ptr = display_get_screen_ptr(x>=0 ? x : 0, row*8);
+    screen_ptr = display_get_screen_ptr(x>=0 ? x : 0, row*8u);
     if (yOffset && row<NUM_SCREEN_ROWS-1 && row >= -1) {
-      screen_ptr2 = display_get_screen_ptr(x>=0 ? x : 0, (row+1)*8);
+      screen_ptr2 = display_get_screen_ptr(x>=0 ? x : 0, (row+1)*8u);
     }
     for (uint8_t iCol = 0; iCol<width; iCol++) {
       bitmap_pixel = *bitmap;

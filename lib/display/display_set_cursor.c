@@ -6,7 +6,7 @@
 
 #include "display.h"
 
-void display_set_cursor(uint8_t x, uint8_t y) {
+inline void display_set_cursor(uint8_t x, uint8_t y) {
   display_cursor_x = x;
   display_cursor_y = y;
 }

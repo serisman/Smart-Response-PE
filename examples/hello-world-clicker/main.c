@@ -131,7 +131,7 @@ void loop() {
   }
 
   // Paint the screen buffer to the LCD
-  display_paint();
+  display_paint(true);
 }
 
 void main() {

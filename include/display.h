@@ -29,12 +29,12 @@ extern uint8_t display_frame_count;
 extern uint8_t display_cursor_x;
 extern uint8_t display_cursor_y;
 
-inline void display_init();
-inline void display_invert(bool invert);
-inline void display_paint();
+inline void display_init()              { uc1701_init(); }
+inline void display_invert(bool invert) { uc1701_invert(invert); }
+inline void display_paint(bool clear)   { uc1701_paint(screen, clear); }
 uint8_t __xdata *display_get_screen_ptr(uint8_t x, uint8_t y);
 
-void display_set_color(uint8_t color);
+inline void display_set_color(uint8_t color);
 void display_draw_pixel(uint8_t x, uint8_t y);
 void display_draw_bitmap(const uint8_t __code *bitmap, int8_t x, int8_t y, uint8_t width, uint8_t height);
 void display_draw_circle(uint8_t x0, uint8_t y0, uint8_t r);
@@ -48,7 +48,7 @@ void display_set_frame_rate(uint8_t rate);
 bool display_every_x_frames(uint8_t frames);
 bool display_next_frame();
 
-void display_set_cursor(uint8_t x, uint8_t y);
+inline void display_set_cursor(uint8_t x, uint8_t y);
 void display_draw_char(char c);
 void display_print(char *str);
 

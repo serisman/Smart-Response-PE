@@ -104,7 +104,7 @@ void nextFrame() {
     case MODE_CORRECT:  nextCorrectFrame(); break;
     case MODE_DEAD:     nextDeadFrame();    break;
   }
-  display_paint();
+  display_paint(true);
 }
 
 void showTitle(uint8_t cur) {

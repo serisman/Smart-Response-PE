@@ -7,5 +7,5 @@
 #include "display.h"
 
 uint8_t __xdata *display_get_screen_ptr(uint8_t x, uint8_t y) {
-  return &screen[(y/8*SCREEN_WIDTH) + x];
+  return &screen[(y/8u*SCREEN_WIDTH) + x];
 }
