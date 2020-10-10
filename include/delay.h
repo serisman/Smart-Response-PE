@@ -33,25 +33,16 @@ void _delay_loop_32(uint32_t ctr);
 #define LOOP_CTR_16(cycles)     LOOP_CTR(cycles,21,15)
 #define LOOP_CTR_32(cycles)     LOOP_CTR(cycles,35,27)
 
-#define _delay_us_16mhz(us)     \
-  (LOOP_CTR_8(US_TO_CYCLES_16(us)) < 256ULL) ? \
-  _delay_loop_8((uint8_t)LOOP_CTR_8(US_TO_CYCLES_16(us))) : \
-  (LOOP_CTR_16(US_TO_CYCLES_16(us)) < 65536ULL) ? \
-  _delay_loop_16((uint16_t)LOOP_CTR_16(US_TO_CYCLES_16(us))) : \
-  _delay_loop_32((uint32_t)LOOP_CTR_32(US_TO_CYCLES_16(us)))
+#define _delay_loop(cycles)     \
+  (LOOP_CTR_8(cycles) < 256ULL) ? \
+  _delay_loop_8((uint8_t)LOOP_CTR_8(cycles)) : \
+  (LOOP_CTR_16(cycles) < 65536ULL) ? \
+  _delay_loop_16((uint16_t)LOOP_CTR_16(cycles)) : \
+  _delay_loop_32((uint32_t)LOOP_CTR_32(cycles))
 
-#define _delay_us(us)           \
-  (LOOP_CTR_8(US_TO_CYCLES(us)) < 256ULL) ? \
-  _delay_loop_8((uint8_t)LOOP_CTR_8(US_TO_CYCLES(us))) : \
-  (LOOP_CTR_16(US_TO_CYCLES(us)) < 65536ULL) ? \
-  _delay_loop_16((uint16_t)LOOP_CTR_16(US_TO_CYCLES(us))) : \
-  _delay_loop_32((uint32_t)LOOP_CTR_32(US_TO_CYCLES(us)))
+#define _delay_us_16mhz(us)     _delay_loop(US_TO_CYCLES_16(us))
 
-#define _delay_ms(ms)           \
-  (LOOP_CTR_8(MS_TO_CYCLES(ms)) < 256ULL) ? \
-  _delay_loop_8((uint8_t)LOOP_CTR_8(MS_TO_CYCLES(ms))) : \
-  (LOOP_CTR_16(MS_TO_CYCLES(ms)) < 65536ULL) ? \
-  _delay_loop_16((uint16_t)LOOP_CTR_16(MS_TO_CYCLES(ms))) : \
-  _delay_loop_32((uint32_t)LOOP_CTR_32(MS_TO_CYCLES(ms)))
+#define _delay_us(us)           _delay_loop(US_TO_CYCLES(us))
+#define _delay_ms(ms)           _delay_loop(MS_TO_CYCLES(ms))
 
 #endif /* __delay_h_included__ */
